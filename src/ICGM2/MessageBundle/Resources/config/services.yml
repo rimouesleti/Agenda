@@ -1,0 +1,9 @@
+parameters:
+#    message.example.class: ICGM2\MessageBundle\Example
+
+services:
+    icgm2_new_thread.new_thread_form.type:
+        class: ICGM2\MessageBundle\FormType\NewThreadMessageFormType
+#        arguments: [%fos_message.thread_class%]
+        tags:
+            - { name: form.type, alias: icgm2_new_thread}

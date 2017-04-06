@@ -1,0 +1,352 @@
+
+<div class="col-md-12">
+    <div class="errorHandler alert alert-danger no-display">
+        <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+    </div>
+</div>
+<form action="{{ path('fos_user_profile_edit', {'id':user.id}) }}" method="post" {{ form_enctype(form) }} >
+
+
+    <div class="col-md-6 ">
+
+        <div class="form-group">
+            <div class="thumbnail">
+                {% if user.path %}
+                    <img src="{{ asset("uploads/user/profilepics/") ~ user.path  }}" alt="user-picture" width="150" height="150">
+                {% else %}
+                    <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="user-picture" width="150" height="150" ></td>
+
+                {% endif %}
+                <div class="caption" style="text-align: center;">
+                    <button id="uploadBTN" class="btn btn-light-grey btn-file">
+                        <i class="fa fa-picture-o"></i> Select image     
+                    </button>
+
+                </div>
+            </div>
+            {{ form_widget(form.file) }}
+        </div> 
+
+
+
+        <div class="form-group">
+            {% trans %}Last Name{% endtrans %}<span class="symbol required"></span>
+            {{ form_errors(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+        </div>
+
+        <div class="form-group">
+            {% trans %}First Name{% endtrans %}<span class="symbol required"></span>
+            {{ form_errors(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+        </div>
+        <div class="form-group">
+            {% trans %}Username{% endtrans %}<span class="symbol required"></span>
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username) }}  
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.email, 'Email') }}<span class="symbol required"></span>
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email) }}
+
+        </div>
+
+        <div class="form-group">
+
+            {{ form_label(form.roles, 'Role') }}<span class="symbol required"></span>
+            {{ form_errors(form.roles) }} 
+            {{ form_widget(form.roles) }}
+
+        </div>
+        <div class="form-group">
+            {% trans %}Language{% endtrans %}<span class="symbol required"></span>
+            {{ form_errors(form.language) }}
+            {{ form_widget(form.language) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.departement, 'Departement') }}<span class="symbol required"></span>
+            {{ form_errors(form.departement) }}
+            {{ form_widget(form.departement) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.phone, 'Phone') }}<span class="symbol required"></span>
+            {{ form_errors(form.phone) }}
+            {{ form_widget(form.phone) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.mphone, 'Mobile') }}<span class="symbol required"></span>
+            {{ form_errors(form.mphone) }}
+            {{ form_widget(form.mphone) }}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+
+
+
+        <div class="form-group">
+            {% trans %}Country{% endtrans %}
+            {{ form_errors(form.country) }}
+            {{ form_widget(form.country) }}
+        </div>
+        <div class="form-group">
+            {% trans %}City{% endtrans %}
+            {{ form_errors(form.city) }}
+            {{ form_widget(form.city) }}
+        </div>
+
+        <div class="form-group">
+
+            {% trans %}Address{% endtrans %}
+            {{ form_errors(form.address) }}
+            {{ form_widget(form.address) }}
+        </div>
+
+        <div class="form-group">
+            {% trans %}Zip Code{% endtrans %}
+            {{ form_errors(form.zip_code) }}
+            {{ form_widget(form.zip_code) }}
+        </div>
+
+        <div class="panel-body panel-scroll height-300">
+            <div id="divMap"></div>
+        </div>
+
+        {{ form_widget(form.position, { 'attr': {'style': 'display:none'} }) }}
+
+
+
+
+
+    </div>
+    {{ form_rest(form) }}
+    <button class="btn btn-green col-md-4 col-xs-12" type="submit" style="margin-top: 5%;float: right;">
+        <i class="fa fa-floppy-o"></i> {% trans %}Submit{% endtrans %}
+    </button>
+</form>
+
+{% javascripts 
+   'bundles/user/js/jQuery/jquery-2.1.1.min.js'  
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+<script>
+    $("#uploadBTN").bind("click", function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        $("#fos_user_profile_form_file").click();
+    });
+
+
+
+
+    window.onload = GetMap;
+    var map = null;
+    var pin;
+    var pushpindragend;
+
+    // load Map Content with a handler on click to insert a pushpin
+    function GetMap() {
+
+        Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                {
+                    callback: function () {
+                        map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                {
+                                    credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                    enableClickableLogo: false,
+                                    enableSearchLogo: false,
+                                    center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                    zoom: 5,
+                                    showBreadcrumb: false,
+                                    showDashboard: false
+                                });
+                        LoadPushPinPosition();
+                    }
+                });
+    }
+
+    function LoadPushPinPosition() {
+        var l = new Array();
+        var s = "{{user.position}}";
+        l = s.split(",");
+        //console.log("1");
+        var longitude = parseFloat(l[0]);
+        var lattitude = parseFloat(l[1]);
+        var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: true};
+        pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+        map.entities.push(pin);
+
+        map.setView({center: new Microsoft.Maps.Location(longitude, lattitude), zoom: 13});
+        pushpindragend = Microsoft.Maps.Events.addHandler(pin, 'dragend', endDragDetails);
+
+
+    }
+
+    $("#fos_user_profile_form_city").change(function () {
+
+        if ($(this).val() !== "")
+        {
+            LoadSearchModule();
+        }
+
+    });
+
+    $("#fos_user_profile_form_address").change(function () {
+
+        if ($(this).val() !== "")
+        {
+            LoadSearchModule2();
+        }
+
+    });
+
+    function LoadSearchModule() {
+        Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest})
+    }
+    function LoadSearchModule2() {
+        Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest2})
+    }
+
+    function createSearchManager() {
+        map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+        searchManager = map.getComponent('searchManager');
+    }
+    function createSearchManager2() {
+        map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+        searchManager = map.getComponent('searchManager');
+    }
+
+    function searchRequest() {
+        createSearchManager();
+        var query = $('#fos_user_profile_form_country').val() + " " + $('#fos_user_profile_form_city').val() + " ";
+        if (query != "")
+        {
+            var request = {
+                query: query,
+                count: 20,
+                startIndex: 0,
+                bounds: map.getBounds(),
+                callback: search_onSearchSuccess,
+                errorCallback: search_onSearchFailure
+            };
+            searchManager.search(request);
+        }
+        else
+            alert('champ vide');
+    }
+    function searchRequest2() {
+        createSearchManager2();
+        var query = $('#fos_user_profile_form_country').val() + " " + $('#fos_user_profile_form_city').val() + " " + $('#fos_user_profile_form_address').val() + " " + $("#fos_user_profile_form_zip_code");
+        if (query != "")
+        {
+            var request = {
+                query: query,
+                count: 20,
+                startIndex: 0,
+                bounds: map.getBounds(),
+                callback: search_onSearchSuccess2,
+                errorCallback: search_onSearchFailure2
+            };
+            searchManager.search(request);
+        }
+        else
+            alert('champ vide');
+    }
+
+    function search_onSearchSuccess(result, userData) {
+
+        if (result.searchRegion.mapBounds !== null) {
+
+            search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+            map.setView({
+                bounds: result.searchRegion.mapBounds.locationRect
+            });
+        }
+        else {
+            console.log('pas de resultat');
+        }
+    }
+
+    function search_onSearchSuccess2(result, userData) {
+
+        if (result.searchRegion.mapBounds !== null) {
+
+            search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+            map.setView({
+                bounds: result.searchRegion.mapBounds.locationRect
+            });
+        }
+        else {
+            console.log('pas de resultat');
+        }
+    }
+
+    function search_createMapPin(a, b) {
+        var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: true};
+        pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(a, b), pushpinOptions);
+
+        map.entities.clear();
+        //console.log("2");
+
+        map.entities.push(pin);
+        pushpindragend = Microsoft.Maps.Events.addHandler(pin, 'dragend', endDragDetails);
+
+        console.log(a + "," + b);
+        $("#fos_user_profile_form_position").val(a + "," + b);
+
+
+    }
+
+    endDragDetails = function (e)
+    {
+        console.log(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+        $.ajax({
+            url: "http://dev.virtualearth.net/REST/v1/Locations/" + e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude,
+            dataType: "jsonp",
+            data: {
+                key: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                q: 'xml'
+            },
+            jsonp: "jsonp",
+            success: function (data) {
+
+
+                console.log(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+
+                $("#fos_user_profile_form_position").val(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+
+                var result = data.resourceSets[0];
+                if (result) {
+                    if (result.estimatedTotal > 0) {
+
+                        var rslt = result.resources[0].address;
+                        $("#fos_user_profile_form_zip_code").val(rslt.postalCode);
+                        $("#fos_user_profile_form_address").val(rslt.formattedAddress)
+                        $("#fos_user_profile_form_country").val(rslt.countryRegion)
+                        $("#fos_user_profile_form_city").val(rslt.locality)
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    function search_onSearchFailure(result, userData) {
+        alert('Pas de Resultat');
+    }
+    function search_onSearchFailure2(result, userData) {
+        alert('Pas de Resultat');
+    }
+
+
+
+
+</script>

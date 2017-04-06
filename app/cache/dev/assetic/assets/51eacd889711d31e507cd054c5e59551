@@ -1,0 +1,61 @@
+/* iCheck plugin skins
+----------------------------------- */
+@import url("../../bundles/pages/css/iCheck/skins/minimal/_all.css");
+/*
+@import url("../../bundles/pages/css/iCheck/skins/minimal/minimal.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/red.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/green.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/blue.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/aero.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/grey.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/orange.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/yellow.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/pink.css");
+@import url("../../bundles/pages/css/iCheck/skins/minimal/purple.css");
+*/
+
+@import url("../../bundles/pages/css/iCheck/skins/square/_all.css");
+/*
+@import url("../../bundles/pages/css/iCheck/skins/square/square.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/red.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/green.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/blue.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/aero.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/grey.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/orange.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/yellow.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/pink.css");
+@import url("../../bundles/pages/css/iCheck/skins/square/purple.css");
+*/
+
+@import url("../../bundles/pages/css/iCheck/skins/flat/_all.css");
+/*
+@import url("../../bundles/pages/css/iCheck/skins/flat/flat.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/red.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/green.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/blue.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/aero.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/grey.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/orange.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/yellow.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/pink.css");
+@import url("../../bundles/pages/css/iCheck/skins/flat/purple.css");
+*/
+
+@import url("../../bundles/pages/css/iCheck/skins/line/_all.css");
+/*
+@import url("../../bundles/pages/css/iCheck/skins/line/line.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/red.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/green.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/blue.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/aero.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/grey.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/orange.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/yellow.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/pink.css");
+@import url("../../bundles/pages/css/iCheck/skins/line/purple.css");
+*/
+
+@import url("../../bundles/pages/css/iCheck/skins/polaris/polaris.css");
+
+@import url("../../bundles/pages/css/iCheck/skins/futurico/futurico.css");

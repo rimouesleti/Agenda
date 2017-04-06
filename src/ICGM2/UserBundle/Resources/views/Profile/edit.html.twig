@@ -1,0 +1,44 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('contributors') }}">
+            {% trans %}Contributors list{% endtrans %}
+        </a>
+    </li>
+
+    <li class="active">   {% trans %}Edit{% endtrans %}
+    </li>
+{%endblock%}
+
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite' 
+  'bundles/pages/css/summernote/dist/summernote.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <div class="container" >
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">{% trans %}Edit Contibutor{% endtrans %}</span></h4>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+
+                      {% include "FOSUserBundle:Profile:edit_content.html.twig" %}
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{%endblock%}
+

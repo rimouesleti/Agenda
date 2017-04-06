@@ -1,0 +1,88 @@
+'Bad credentials': 'Nom d''utilisateur ou mot de passe incorrect'
+group.edit.submit: 'Mettre à jour le groupe'
+group.show.name: 'Nom du groupe'
+group.new.submit: 'Créer le groupe'
+group.flash.updated: 'Le groupe a été mis à jour'
+group.flash.created: 'Le groupe a été créé'
+group.flash.deleted: 'Le groupe a été supprimé'
+security.login.username: 'Nom d''utilisateur :'
+security.login.password: 'Mot de passe :'
+security.login.remember_me: Se souvenir de moi
+security.login.submit: Connexion
+profile.show.username: 'Nom d''utilisateur'
+profile.show.email: 'Adresse e-mail'
+profile.edit.submit: 'Mettre à jour'
+profile.flash.updated: 'Le profil a été mis à jour'
+change_password.submit: 'Modifier le mot de passe'
+change_password.flash.success: 'Le mot de passe a été modifié'
+registration.check_email: 'Un e-mail a été envoyé à l''adresse %email%. Il contient un lien d''activation sur lequel il vous faudra cliquer afin d''activer votre compte.'
+registration.confirmed: 'Félicitations %username%, votre compte est maintenant activé.'
+registration.back: 'Retour à la page d''origine.'
+registration.submit: Enregistrer
+registration.flash.user_created: 'L''utilisateur a été créé avec succès'
+registration.email.subject: 'Bienvenue %username% !'
+registration.email.message: "Bonjour %username% !\n\nPour valider votre compte utilisateur, merci de vous rendre sur %confirmationUrl%\n\nCordialement,\nL'équipe.\n"
+resetting.password_already_requested: 'Un nouveau mot de passe a déjà été demandé pour cet utilisateur dans les dernières 24 heures.'
+resetting.check_email: 'Un e-mail a été envoyé à l''adresse %email%. Il contient un lien sur lequel il vous faudra cliquer afin de réinitialiser votre mot de passe.'
+resetting.request.invalid_username: 'Le nom d''utilisateur ou l''adresse e-mail "%username%" n''existe pas.'
+resetting.request.username: 'Nom d''utilisateur ou adresse e-mail :'
+resetting.request.submit: 'Réinitialiser le mot de passe'
+resetting.reset.submit: 'Modifier le mot de passe'
+resetting.flash.success: 'Le mot de passe a été réinitialisé avec succès'
+resetting.email.subject: 'Réinitialisation de votre mot de passe'
+resetting.email.message: "Bonjour %username% !\n\nPour réinitialiser votre mot de passe, merci de vous rendre sur %confirmationUrl%\n\nCordialement,\nL'équipe.\n"
+layout.logout: Déconnexion
+layout.login: Connexion
+layout.register: Inscription
+layout.logged_in_as: 'Connecté en tant que %username%'
+form.group_name: 'Nom du groupe :'
+form.username: 'Nom d''utilisateur :'
+form.email: 'Adresse e-mail :'
+form.current_password: 'Mot de passe actuel :'
+form.password: 'Mot de passe :'
+form.password_confirmation: 'Vérification :'
+form.new_password: 'Nouveau mot de passe :'
+form.new_password_confirmation: 'Vérification :'
+form.lastname: 'Nom:'
+form.plainPassword.first: 'mot de passe:'
+form.plainPassword.second: 'Confirmation de mot de passe:'
+form.address: 'Adresse:'
+form.zipcode: 'Code postale:'
+form.country: 'Pays:'
+form.city: 'Ville:'
+form.companyname: 'Société:'
+form.phone: 'Téléphone:'
+form.mphone: 'Portable:'
+form.profile_picture: 'Photo de profil'
+form.firstName: Nom
+form.lastName: Prénom
+Contributors List: Liste des Collaborateurs
+Add contributor: Ajouter un collaborateur
+Add New: Ajouter un nouveau
+Name: Nom
+Last Logged In: Dernière connexion
+Submit: Valider
+Last Name: Nom
+First Name: Prénom
+Language: Langue
+Address: Adresse
+Zip Code: Code postal
+Country: Pays
+City: Ville
+Username: Nom d'utilisateur
+Edit Contibutor: Modifier le collaborateur
+Edit: Modifier
+Add: Ajouter
+Edit: Modifier
+Show: Voir
+Remove: Supprimer
+Contact Information: Informations de contact
+General information: Informations générales
+Geolocation: Géolocalisation
+No recent activities: Aucune activité récente
+ToDos: Tâches
+Show today events: Afficher les événements du jour
+Show calendar: Afficher son agenda
+You don't have enough privilege to view this list: Vous n'avez pas assez de privilège pour visualiser cette liste
+You don't have enough privilege: Vous n'avez pas assez de privilège
+I forgot my password: J'ai oublié mon mot de passe

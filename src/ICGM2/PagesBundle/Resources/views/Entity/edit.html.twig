@@ -1,0 +1,383 @@
+{# empty Twig template #}
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('entities') }}">
+            {% trans %}Contact list{% endtrans %}
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('entity', {'id': entity.id}) }}">
+            {{entity.name}}
+        </a>
+    </li>
+    <li class="active"> edit
+    </li>
+{%endblock%}
+
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite' 
+  'bundles/pages/css/summernote/dist/summernote.css'
+  'bundles/pages/js/select2-3.5.1/select2.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <div class="container" >
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Edit <span class="text-bold">{{entity.name}}</span></h4>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="col-md-12">
+                            <div class="errorHandler alert alert-danger no-display">
+                                <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+                            </div>
+                        </div>
+                        <form action="{{ path('entity/edit',{'id':entity.id}) }}" method="post" {{ form_enctype(form) }} >
+
+                            <div class="col-md-6 " style="border-right: 1px solid #DDDDDD; padding-right: 15px;">
+                                <div class="form-group">
+                                    {{ form_label(form.name, 'Name') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.name) }}
+                                </div>
+
+                                <div class="form-group">
+                                    Type<span class="symbol required"></span>
+                                    {{ form_widget(form.sort) }}
+                                </div>
+                                <div class="form-group">
+                                    {% trans %}Status{% endtrans %}<span class="symbol required"></span>
+                                    {{ form_widget(form.type) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.sort, 'Speciality') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.speciality) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.email, 'email') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.email) }}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {{ form_label(form.phone, 'phone') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.phone) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.website, 'Website') }}
+                                    {{ form_widget(form.website) }}
+                                </div>
+
+                                <div id="employeesLabel" class="form-group" style="display:none;">
+                                    {{ form_label(form.employees_number, 'Employees number') }}
+                                    {{ form_widget(form.employees_number) }}
+                                </div>
+                                <div id="faxLabel" class="form-group" style="display:none;">
+                                    {{ form_label(form.fax, 'Fax') }}
+                                    {{ form_widget(form.fax) }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="thumbnail">
+                                        {% if entity.profilePicture %}
+                                            <img src="{{ asset("uploads/entities/") ~ entity.profilePicture  }} " alt="" width="150" height="150" >
+                                        {% else %}
+                                            {%if entity.sort == "company"%}
+                                                <img src="{{ asset('bundles/pages/images/Company.png') }} " alt="" width="150" height="150">
+
+                                            {%else%}
+                                                <img src="{{ asset('bundles/pages/images/anonymous.jpg') }} " alt=""  width="150" height="150">
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="caption" style="text-align: center;">
+                                            <button id="uploadBTN" class="btn btn-light-grey btn-file">
+                                                <i class="fa fa-picture-o"></i> Select image     
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    {{ form_widget(form.file) }}
+                                </div> 
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.country, 'Country') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.country) }}
+
+                                </div>
+                                <div class="form-group">
+
+                                    {{ form_label(form.city, 'City') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.city) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.address, 'Address') }}
+                                    {{ form_widget(form.address) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.zip_code, 'Zip code') }}</span>
+                                    {{ form_widget(form.zip_code) }}
+                                </div>
+
+
+                                <div class="panel-body panel-scroll height-300">
+                                    <div id="divMap"></div>
+                                </div>
+
+
+                                {{ form_widget(form.position, { 'attr': {'style': 'display:none'} }) }}
+
+                                <div class="clear"></div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_label(form.description, 'Description') }}
+
+                                    {{ form_widget(form.description, { 'attr': {'class': 'summernote'} }) }}
+
+                                </div>
+                                {{ form_rest(form) }}
+
+                                <button class="btn btn-green col-md-4 col-xs-12" type="submit" style="margin-top: 5%;float: right;">
+                                    <i class="fa fa-floppy-o"></i> {% trans %}Submit{% endtrans %}
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% javascripts 
+   'bundles/user/js/jQuery/jquery-2.1.1.min.js'   
+  'bundles/user/js/bootstrap/js/bootstrap.min.js' 
+  'bundles/pages/css/summernote/dist/summernote.min.js' 
+ 'bundles/pages/js/select2-3.5.1/select2.min.js'
+ 'bundles/pages/js/editEntity.js' 
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+    <script>
+        window.onload = GetMap;
+        var map = null;
+        var pin;
+        var pushpindragend;
+
+        // load Map Content with a handler on click to insert a pushpin
+        function GetMap() {
+
+            Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                    {
+                        callback: function () {
+                            map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                    {
+                                        credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                        mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                        enableClickableLogo: false,
+                                        enableSearchLogo: false,
+                                        center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                        zoom: 5,
+                                        showBreadcrumb: false,
+                                        showDashboard: false
+                                    });
+                            LoadPushPinPosition();
+                        }
+                    });
+        }
+
+        function LoadPushPinPosition() {
+            var l = new Array();
+            var s = "{{entity.position}}";
+            l = s.split(",");
+            //console.log("1");
+            var longitude = parseFloat(l[0]);
+            var lattitude = parseFloat(l[1]);
+            var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: true};
+            pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+            map.entities.push(pin);
+           
+            map.setView({center: new Microsoft.Maps.Location(longitude, lattitude), zoom: 13});
+            pushpindragend = Microsoft.Maps.Events.addHandler(pin, 'dragend', endDragDetails);
+
+
+        }
+        
+            $("#icgm2_pagesbundle_entities_city").change(function () {
+
+            if ($(this).val() !== "")
+            {
+                LoadSearchModule();
+            }
+
+        });
+
+        $("#icgm2_pagesbundle_entities_address").change(function () {
+
+            if ($(this).val() !== "")
+            {
+                LoadSearchModule2();
+            }
+
+        });
+
+        function LoadSearchModule() {
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest})
+        }
+        function LoadSearchModule2() {
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest2})
+        }
+
+        function createSearchManager() {
+            map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+            searchManager = map.getComponent('searchManager');
+        }
+        function createSearchManager2() {
+            map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+            searchManager = map.getComponent('searchManager');
+        }
+
+        function searchRequest() {
+            createSearchManager();
+            var query = $('#icgm2_pagesbundle_entities_country').val() + " " + $('#icgm2_pagesbundle_entities_city').val() + " ";
+            if (query != "")
+            {
+                var request = {
+                    query: query,
+                    count: 20,
+                    startIndex: 0,
+                    bounds: map.getBounds(),
+                    callback: search_onSearchSuccess,
+                    errorCallback: search_onSearchFailure
+                };
+                searchManager.search(request);
+            }
+            else
+                alert('champ vide');
+        }
+        function searchRequest2() {
+            createSearchManager2();
+            var query = $('#icgm2_pagesbundle_entities_country').val() + " " + $('#icgm2_pagesbundle_entities_city').val() + " " + $('#icgm2_pagesbundle_entities_address').val() + " " + $("#icgm2_pagesbundle_entities_zip_code");
+            if (query != "")
+            {
+                var request = {
+                    query: query,
+                    count: 20,
+                    startIndex: 0,
+                    bounds: map.getBounds(),
+                    callback: search_onSearchSuccess2,
+                    errorCallback: search_onSearchFailure2
+                };
+                searchManager.search(request);
+            }
+            else
+                alert('champ vide');
+        }
+
+        function search_onSearchSuccess(result, userData) {
+
+            if (result.searchRegion.mapBounds !== null) {
+
+                search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+                map.setView({
+                    bounds: result.searchRegion.mapBounds.locationRect
+                });
+            }
+            else {
+                console.log('pas de resultat');
+            }
+        }
+
+        function search_onSearchSuccess2(result, userData) {
+
+            if (result.searchRegion.mapBounds !== null) {
+
+                search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+                map.setView({
+                    bounds: result.searchRegion.mapBounds.locationRect
+                });
+            }
+            else {
+                console.log('pas de resultat');
+            }
+        }
+
+        function search_createMapPin(a, b) {
+            var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: true};
+            pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(a, b), pushpinOptions);
+
+            map.entities.clear();
+            //console.log("2");
+
+            map.entities.push(pin);
+            pushpindragend = Microsoft.Maps.Events.addHandler(pin, 'dragend', endDragDetails);
+
+            console.log(a + "," + b);
+            $("#icgm2_pagesbundle_entities_position").val(a + "," + b);
+
+
+        }
+
+        endDragDetails = function (e)
+        {   console.log(e.entity.getLocation().latitude+","+e.entity.getLocation().longitude ); 
+            $.ajax({
+                url: "http://dev.virtualearth.net/REST/v1/Locations/" + e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude,
+                dataType: "jsonp",
+                data: {
+                    key: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                    q: 'xml'
+                },
+                jsonp: "jsonp",
+                success: function (data) {
+
+
+                    console.log(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+
+                    $("#icgm2_pagesbundle_entities_position").val(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+
+                    var result = data.resourceSets[0];
+                    if (result) {
+                        if (result.estimatedTotal > 0) {
+
+                            var rslt = result.resources[0].address;
+                            $("#icgm2_pagesbundle_entities_zip_code").val(rslt.postalCode);
+                            $("#icgm2_pagesbundle_entities_address").val(rslt.formattedAddress)
+                            $("#icgm2_pagesbundle_entities_country").val(rslt.countryRegion)
+                            $("#icgm2_pagesbundle_entities_city").val(rslt.locality)
+                        }
+                    }
+
+                }
+            });
+
+        }
+
+        function search_onSearchFailure(result, userData) {
+            alert('Pas de Resultat');
+        }
+        function search_onSearchFailure2(result, userData) {
+            alert('Pas de Resultat');
+        }
+
+
+
+    </script>
+
+
+{%endblock%}

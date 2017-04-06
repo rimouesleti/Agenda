@@ -1,0 +1,18 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: ICGM
+    database_user: root
+    database_password: rimgeosoft
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: analytic.geosoft
+    mailer_password: geosoft2015@
+    secret: ThisTokenIsNotSoSecretChangeIt
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
+    locale: "undefined"
+    fallback_locale: "en"

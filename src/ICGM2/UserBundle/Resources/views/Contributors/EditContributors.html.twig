@@ -1,0 +1,155 @@
+{% extends "::base.html.twig" %}
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite' 
+  'bundles/pages/css/summernote/dist/summernote.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <div class="container" >
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Edit <span class="text-bold">Contibutor</span></h4>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="col-md-12">
+                            <div class="errorHandler alert alert-danger no-display">
+                                <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+                            </div>
+                        </div>
+                        <form action="{{path('contributor/edit', {'id':user.id})}}" method="post" {{ form_enctype(form) }} >
+
+
+                            <div class="col-md-6 ">
+                                <div class="form-group">
+                                    {{ form_label(form.lastName, 'Last Name') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.lastName) }}
+                                    {{ form_widget(form.lastName) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.firstName, 'First Name') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.firstName) }}
+                                    {{ form_widget(form.firstName) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.username, 'Username') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.username) }}
+                                    {{ form_widget(form.username) }}  
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.email, 'Email') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.email) }}
+                                    {{ form_widget(form.email) }}
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    {{ form_label(form.roles, 'Role') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.roles) }} 
+                                    {{ form_widget(form.roles) }}
+
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.departement, 'Departement') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.departement) }}
+                                    {{ form_widget(form.departement) }}
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="thumbnail">
+                                        {% if user.path %}
+                                            <img src="{{ asset("uploads/user/profilepics/") ~ user.path  }}" alt="user-picture" width="150" height="150">
+                                        {% else %}
+                                            <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="user-picture" width="150" height="150" ></td>
+
+                                        {% endif %}
+                                        <div class="caption" style="text-align: center;">
+                                            <button id="uploadBTN" class="btn btn-light-grey btn-file">
+                                                <i class="fa fa-picture-o"></i> Select image     
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    {{ form_widget(form.file) }}
+                                </div> 
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    {{ form_label(form.phone, 'Phone') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.phone) }}
+                                    {{ form_widget(form.phone) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.mphone, 'Mobile Phone') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.mphone) }}
+                                    {{ form_widget(form.mphone) }}
+                                </div>
+                                <div class="form-group">
+
+                                    {{ form_label(form.address, 'Address') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.address) }}
+                                    {{ form_widget(form.address) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.zip_code, 'Zip Code') }}<span class="symbol required"></span>
+                                    {{ form_errors(form.zip_code) }}
+                                    {{ form_widget(form.zip_code) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(form.country, 'Country') }}
+                                    {{ form_errors(form.country) }}
+                                    {{ form_widget(form.country) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.city, 'City') }}
+                                    {{ form_errors(form.city) }}
+                                    {{ form_widget(form.city) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.company_name, 'Company Name') }}
+                                    {{ form_errors(form.company_name) }}
+                                    {{ form_widget(form.company_name) }}
+                                </div>
+
+
+
+                            </div>
+
+                            <input type="submit" value="Submit"  class="btn btn-success" style="margin-top: 5%;float: right;"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% javascripts 
+   'bundles/user/js/jQuery/jquery-2.1.1.min.js'   
+  'bundles/user/js/bootstrap/js/bootstrap.min.js' 
+  'bundles/pages/css/summernote/dist/summernote.min.js' 
+ 'bundles/user/js/editUser.js' 
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+    <script>
+
+
+    </script>
+
+{%endblock%}

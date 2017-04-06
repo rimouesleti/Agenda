@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- start: HEAD -->
+    <head>
+        <title>{% block title %}ICGM{% endblock %}</title>
+        <!-- start: META -->
+        <meta charset="utf-8" />
+        <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- end: META -->
+        <!-- start: MAIN CSS -->
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,200,100,800' rel='stylesheet' type='text/css'>
+
+
+        {% stylesheets  filter='cssrewrite'      
+             'bundles/user/css/font-awesome/css/font-awesome.min.css'
+            'bundles/user/css/animate.css/animate.min.css'
+           '../app/Resources/public/css/plugins/bootstrap/css/bootstrap.min.css'        
+
+            'bundles/pages/css/iCheck/skins/all.css'
+            'bundles/pages/css/perfect-scrollbar/src/perfect-scrollbar.css'
+            'bundles/pages/css/summernote/dist/summernote.css'
+
+          'bundles/pages/css/bootstrap-fileupload/bootstrap-fileupload.min.css'
+             'bundles/pages/js/bootstrap-modal/css/bootstrap-modal-bs3patch.css' 
+            'bundles/pages/js/bootstrap-modal/css/bootstrap-modal.css' 
+  
+       'bundles/pages/js/bootstrap-datetimepicker/css/datetimepicker.css'
+
+
+            'bundles/user/css/styles.css'  
+            'bundles/user/css/styles-responsive.css'
+            'bundles/pages/css/plugins.css'       
+            'bundles/pages/css/themes/theme-default.css'
+             
+  'bundles/pages/js/owl-carousel/owl-carousel/owl.carousel.css'
+  'bundles/pages/js/owl-carousel/owl-carousel/owl.theme.css'
+  'bundles/pages/js/owl-carousel/owl-carousel/owl.transitions.css'
+
+
+        %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <!-- end: HEAD -->
+    <!-- start: BODY -->
+    <body>
+
+
+        <div class="main-wrapper">
+            <!-- start: TOPBAR -->
+            <header class="topbar navbar navbar-inverse navbar-fixed-top inner">
+                <!-- start: TOPBAR CONTAINER -->
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="sb-toggle-left hidden-md hidden-lg" href="#main-navbar">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <!-- start: LOGO -->
+                        <a class="navbar-brand" href="index.html">
+                            <img src="{{ asset('bundles/user/images//icgm-logo.png') }}" alt="ICGM"/>
+                        </a>
+                        <!-- end: LOGO -->
+                    </div>
+                    <div class="topbar-tools">
+                        <!-- start: TOP NAVIGATION MENU -->
+                        <ul class="nav navbar-right">
+                            <!-- start: USER DROPDOWN -->
+                            <li class="dropdown current-user">
+                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
+                                    {% if app.user.path %}
+                                        <img src="{{ asset("uploads/user/profilepics/") ~ app.user.path  }} " alt="userpicture" class="img-circle" width="25">
+                                    {% else %}
+                                        <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="userpicture" class="img-circle"  width="25">
+
+                                    {% endif %}
+                                    <span class="username hidden-xs">{{ app.user.firstName }} {{ app.user.lastName }}</span> <i class="fa fa-caret-down "></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-dark">
+                                    <li>
+                                        <a href="{{ path('contributor', { 'id': app.user.Id }) }}">
+                                            {% trans %}My Profile{% endtrans %}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{path('calendar', { 'id': app.user.Id })}}">
+                                            {% trans %}My Calendar{% endtrans %}
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ path('fos_user_security_logout') }}">
+                                            {% trans %}Log Out{% endtrans %}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- end: USER DROPDOWN -->
+
+                        </ul>
+                        <!-- end: TOP NAVIGATION MENU -->
+                    </div>
+                </div>
+                <!-- end: TOPBAR CONTAINER -->
+            </header>
+            <!-- end: TOPBAR -->
+            <!-- start: PAGESLIDE LEFT -->
+            <a class="closedbar inner hidden-sm hidden-xs" href="#">
+            </a>
+            <nav id="pageslide-left" class="pageslide inner">
+                <div class="navbar-content">
+                    <!-- start: SIDEBAR -->
+                    <div class="main-navigation left-wrapper transition-left">
+                        <div class="navigation-toggler hidden-sm hidden-xs">
+                            <a href="#main-navbar" class="sb-toggle-left">
+                            </a>
+                        </div>
+                        <div class="user-profile border-top padding-horizontal-10 block">
+                            <div class="inline-block">
+                                {% if app.user.path %}
+                                    <img src="{{ asset("uploads/user/profilepics/") ~ app.user.path  }} " alt="userpicture" width="55">
+                                {% else %}
+                                    <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="userpicture" width="55">
+
+                                {% endif %}
+                            </div>
+                            <div class="inline-block">                              
+                                <h4 class="no-margin">{{ app.user.firstName }} {{ app.user.lastName }} </h4>
+
+                            </div>
+                        </div>
+                        <!-- start: MAIN NAVIGATION MENU -->
+                        <ul class="main-navigation-menu">
+                            <li class="active open">
+                                <a href="{{ path('home') }}"><i class="fa fa-home"></i> <span class="title">{% trans %}Dashboard{% endtrans %} </span></a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('map') }}"><i class="fa fa-globe"></i> <span class="title">{% trans %}Map{% endtrans %}</span> </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('entities') }}"><i class="fa fa-briefcase"></i> <span class="title">Contacts</span> </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"><i class="fa fa-file-text-o"></i> <span class="title">{% trans %}My Pages{% endtrans %}</span><i class="icon-arrow"></i> </a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ path('contributor', { 'id': app.user.Id }) }}">
+                                            <span class="title">Profile</span>
+                                        </a>
+                                    </li>
+                                    {% if is_granted('ROLE_ADMIN') %}  
+                                        <li>
+                                            <a href="{{ path('events') }}">
+                                                <span class="title">{% trans %}Events{% endtrans %}</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="{{path('calendar', { 'id': app.user.Id })}}"><i class="fa fa-calendar-o"></i> <span class="title">{% trans %}Calendar{% endtrans %}</span> </a>
+                            </li>
+
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    <a href="{{path('contributors')}}"><i class="fa fa-users"></i> <span class="title">{% trans %}Contributors{% endtrans %}</span> </a>
+                                </li>
+
+                            {% endif %}
+                        </ul>
+                        <!-- end: MAIN NAVIGATION MENU -->
+                    </div>
+                    <!-- end: SIDEBAR -->
+                </div>
+                <div class="slide-tools">
+                    <div class="col-xs-6 text-left no-padding">
+                        <a class="btn btn-sm status" href="#">
+                            Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 text-right no-padding">
+                        <a class="btn btn-sm log-out text-right" href="{{ path('fos_user_security_logout') }}">
+                            <i class="fa fa-power-off"></i> Log Out
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            <!-- end: PAGESLIDE LEFT -->
+
+            <!-- start: MAIN CONTAINER -->
+            <div class="main-container inner">
+                <!-- start: PAGE -->
+                <div class="main-content">
+                    <!-- start: PANEL CONFIGURATION MODAL FORM -->
+                    <div class="modal fade" id="panel-config" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title">Panel Configuration</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Here will be a configuration form
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button type="button" class="btn btn-primary">
+                                        Save changes
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                    <!-- end: SPANEL CONFIGURATION MODAL FORM -->
+                    <!-- start: PAGE HEADER -->
+                    <!-- start: TOOLBAR -->
+                    <div class="toolbar row hidden-xs">
+                        <div class="col-sm-6 hidden-xs">
+                            <div class="page-header">
+                                <h4 class="breadcrumb" style="font-size: 1.2em;margin: 4%;">
+                                {%block breadcrumb%}{%endblock%}
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="toolbar-tools pull-right">
+                        <!-- start: TOP NAVIGATION MENU -->
+
+                        <!-- end: TOP NAVIGATION MENU -->
+                    </div>
+                </div>
+                <!-- end: TOOLBAR -->
+                <!-- end: PAGE HEADER -->  
+
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="flash-notice">
+                        <div class="alert alert-info" style="margin: 19px;">{{ flashMessage }} </div>
+                    </div>
+                {% endfor %}
+
+
+            {%block mainContent%}{%endblock%}
+        </div>
+        <!-- end: PAGE -->
+    </div>
+    <!-- end: MAIN CONTAINER -->
+    <!-- start: FOOTER -->
+    <footer class="inner">
+        <div class="footer-inner">
+            <div class="pull-left">
+                2014 &copy; Geosoftdev.
+            </div>
+            <div class="pull-right">
+                <span class="go-top"><i class="fa fa-chevron-up"></i></span>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+{% javascripts 
+        'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+        'bundles/user/js/jquery-ui/jquery-ui-1.10.2.custom.min.js' 
+        'bundles/user/js/bootstrap/js/bootstrap.min.js' 
+         'bundles/pages/js/perfect-scrollbar/src/jquery.mousewheel.js' 
+         'bundles/pages/js/perfect-scrollbar/src/perfect-scrollbar.js' 
+          'bundles/pages/js/jquery.scrollTo/jquery.scrollTo.min.js' 
+         'bundles/pages/js/ScrollToFixed/jquery-scrolltofixed-min.js' 
+         'bundles/pages/js/jquery.appear/jquery.appear.js' 
+         'bundles/pages/js/jquery-cookie/jquery.cookie.js' 
+         'bundles/pages/js/velocity/jquery.velocity.min.js' 
+           'bundles/pages/js/bootstrap-modal/js/bootstrap-modal.js' 
+            'bundles/pages/js/bootstrap-modal/js/bootstrap-modalmanager.js' 
+
+           
+        'bundles/pages/js/jquery.pulsate/jquery.pulsate.min.js' 
+
+        'bundles/pages/js/moment/min/moment.min.js'
+        'bundles/pages/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+        'bundles/pages/css/summernote/dist/summernote.min.js' 
+        
+        'bundles/pages/js/select2-3.5.1/select2.min.js'
+       
+  'bundles/pages/js/bootstrap-timepicker/js/bootstrap-timepicker.js'
+ 'bundles/pages/js/bootstrap-daterangepicker/daterangepicker.js'
+        'bundles/pages/js/fullcalendar/fullcalendar/fullcalendar.js'
+   'bundles/pages/js/jquery.dataTables.min.js'
+             
+  'bundles/pages/js/owl-carousel/owl-carousel/owl.carousel.js'
+ 'bundles/pages/js/main.js'
+        'bundles/user/js/user-profile.js' 
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+
+<script>
+    jQuery(document).ready(function () {
+        Main.init();
+        PagesUserProfile.init();
+    });
+</script>
+</body>
+</html>

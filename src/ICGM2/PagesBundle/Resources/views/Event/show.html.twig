@@ -1,0 +1,174 @@
+{% extends "::base.html.twig" %}
+
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('events') }}">
+            {% trans %}Events list{% endtrans %}
+        </a>
+    </li>
+    <li class="active"> {{event.subject}}</li>
+    {%endblock%}
+
+{% block mainContent %}
+
+    <div class="panel panel-white">
+        <div class="panel-body">
+            <div id="readEvent" style="display: block;">
+                <div class="noteWrap col-md-8 col-md-offset-2">
+                    <div class="panel panel-note">
+
+                        <div class="panel-heading">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <h2 class="event-title">{{event.subject}} <small>({{event.type|trans}})</small></h2>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="btn-group options-toggle pull-right">
+                                        <button class="btn dropdown-toggle btn-transparent-grey" data-toggle="dropdown">
+                                            <i class="fa fa-cog"></i>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu dropdown-light pull-right">
+                                            <li>
+                                                <a href="{{ path('event/edit', {'id': event.id}) }}" class="edit-event">
+                                                    <i class="fa fa-pencil"></i> {% trans %}Edit{% endtrans %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('event/delete', {'id': event.id}) }}" class="delete-event">
+                                                    <i class="fa fa-times"></i> {% trans %}Remove{% endtrans %}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="panel-body" style="background: transparent;">
+
+                            <div class="note-content">   
+                                {%if nb>0 %}
+                                    <!-- <div class="col-md-12">
+                                        <div class="alert alert-danger" role="alert">
+                                    {% trans %}This appointment was not confirmed by all the guests{% endtrans %}
+                                   
+                                </div>
+                            </div> -->
+                                {%endif%}
+
+                                <div class="col-md-6">
+
+
+
+
+                                    {% if event.status =="planned" %}                            
+                                        <span class="label label-sm label-info">{% trans %}Planned{% endtrans %}</span>
+                                    {% elseif  event.status =="cancelled" %}
+                                        <span class="label label-sm label-danger">{% trans %}Cancelled{% endtrans %}</span>
+                                    {% elseif  event.status =="done" %}
+                                        <span class="label label-sm label-success">{% trans %}Done{% endtrans %}</span>
+                                    {% else %}
+                                        <span class="label label-sm label-warning">{% trans %}Held{% endtrans %}</span>
+                                    {% endif %} 
+                                    
+                                    {%if  event.callback==1%}
+                                        <span class="event-allday" style="display: inline;">
+
+                                            <i class="fa fa-check"></i> {% trans %}Callback{% endtrans %}
+
+                                        </span>
+                                    {%endif%} 
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="event-start"><p>{% trans %}Start{% endtrans %}:</p>
+                                        <div class="event-day"><h2>{{event.startDate|date("d")}}</h2></div>
+                                        <div class="event-date"><h3>{{event.startDate|date("m-Y")}}</h3></div>
+                                        <div class="event-time"><h3><i class="fa fa-clock-o"></i> {{event.startDate|date("H:i")}}</h3></div>
+                                    </div>
+                                    <div class="event-end" style="display: block;"><p>{% trans %}End{% endtrans %}:</p>
+                                        <div class="event-day"><h2>{{event.endDate|date("d")}}</h2></div>
+                                        <div class="event-date"><h3>{{event.endDate|date("m-Y")}}</h3></div>
+                                        <div class="event-time"><h3><i class="fa fa-clock-o"></i> {{event.endDate|date("H:i")}}</h3></div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <hr>
+                                    <span class="author-note">{% trans %}Appointment with{% endtrans %}: <a href="{{ path('entity', {'id': entityId}) }}">{{event.entity}}</a></span></br>
+                                    <span class="author-note">{% trans %}Assigned To{% endtrans %}: 
+                                        {% for user in event.user %}
+                                            <a href="{{ path('contributor', {'id': user.id }) }}">{{ user.firstname }} {{ user.lastname }}</a>
+                                            {% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </div>
+
+                                {% if eventHistory %}
+                                    <div class="col-md-12" style="margin-top: 5%;">
+                                        <div class="ps-container">
+                                            <table class="table table-striped table-hover">
+                                                <tbody>
+                                                    {% for history in eventHistory %}
+                                                        <tr>
+                                                            <td class="center" style="color: #ADADAD;">
+                                                                <i class="fa fa-clock-o"></i>
+                                                            </td>
+
+                                                            <td>
+                                                                <span class="bold-text text-small">
+                                                                    {%if history.startDate1 < history.startDate2 %}
+                                                                        Ce RDV a été reporté.
+                                                                    {% endif %}
+
+                                                                    {%if history.status1 != history.status2 %}
+                                                                        Le statut de ce RDV a été modifié de {{history.status1|trans}} à {{history.status2|trans}}.
+                                                                    {% endif %}
+
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="bold-text text-small">
+                                                                    par <a href="{{path('contributor', {'id': history.user.id})}}">
+                                                                        {{history.user.firstname}} {{history.user.lastname}}</a> 
+                                                                </span>
+
+                                                            </td>
+                                                            <td>
+                                                                <span class="bold-text text-small">
+                                                                    {{history.date|date('d-m-Y H:i')}}
+                                                                </span>
+
+                                                            </td>
+
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+
+
+
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="col-md-12" style="margin-bottom: 5%;">
+                                    <hr>
+                                    <div>{{event.description|raw}}</div>
+                                </div>
+                            </div>
+                        </div>    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+{%endblock%}

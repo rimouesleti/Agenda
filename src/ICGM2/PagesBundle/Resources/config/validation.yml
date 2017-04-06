@@ -1,0 +1,18 @@
+ICGM2\PagesBundle\Entity\entities:
+   properties:
+        name:
+                    - NotBlank: {message: "Please enter a name."}
+        address:                   
+                    - NotBlank: {message: "Please enter an address."}
+        speciality:
+                   - NotBlank: {message: "Please select a speciality."}
+        sort:
+                    - NotBlank: {message: "Please select a sort."}                    
+                    
+#        profilePicture:
+#            - Image:
+#                maxSize: 5024k
+#                maxSizeMessage: The maxmimum allowed file size is 5MB
+#                mimeTypes : {"image/jpeg", "image/gif", "image/png"}
+#                mimeTypesMessage : "Only the file types image are allowed."
+        

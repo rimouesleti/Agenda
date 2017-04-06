@@ -1,0 +1,105 @@
+{% extends "::base.html.twig" %}
+
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('todos') }}">
+            Todos list
+        </a>
+    </li>
+    <li class="active"> {{todo.subject}}</li>
+    {%endblock%}
+
+{% block mainContent %}
+    <div class="panel panel-white">
+        <div class="panel-body">
+            <div id="readEvent" style="display: block;"> 
+                <div class="noteWrap col-md-8 col-md-offset-2">
+                    <div class="panel panel-note">
+
+                        <div class="panel-heading">
+                            <div class="col-md-12">
+                                <h2>{{todo.subject }} </h2>
+                                <div class="btn-group options-toggle pull-right">
+                                    <button class="btn dropdown-toggle btn-transparent-grey" data-toggle="dropdown">
+                                        <i class="fa fa-cog"></i>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul role="menu" class="dropdown-menu dropdown-light pull-right">
+                                        <li>
+                                            <a href="{{ path('todo/edit', {'id': todo.id}) }}" class="edit-event">
+                                                <i class="fa fa-pencil"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('todo/delete', {'id': todo.id}) }}" class="delete-event">
+                                                <i class="fa fa-times"></i> Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>                  
+
+                        <div class="panel-body" style="background: transparent;">
+
+                            <div class="note-content">
+                                <div class="col-md-6">
+                                    {% if todo.status =="pending" %}                            
+                                        <span class="label label-sm label-success">{{todo.status }}</span>
+                                    {% elseif  todo.status =="completed" %}
+                                        <span class="label label-sm label-success">{{todo.status }}</span>
+                                    {% elseif  todo.status =="planned" %}
+                                        <span class="label label-sm label-warning">{{todo.status }}</span>
+                                    {% elseif  todo.status =="cancelled" %}
+                                        <span class="label label-sm label-danger">{{todo.status }}</span>
+                                    {% else %}
+                                        <span class="label label-sm label-warning">{{todo.status }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <div class="event-start"><p>Start:</p>
+                                        <div class="event-day"><h2>{{todo.startDate|date("d")}}</h2></div>
+                                        <div class="event-date"><h3>{{todo.startDate|date("m-Y")}}</h3></div>
+                                        <div class="event-time"><h3><i class="fa fa-clock-o"></i> {{todo.startDate|date("H:i")}}</h3></div>
+                                    </div>
+                                    <div class="event-end" style="display: block;"><p>End:</p>
+                                        <div class="event-day"><h2>{{todo.dueDate|date("d")}}</h2></div>
+                                        <div class="event-date"><h3>{{todo.dueDate|date("m-Y")}}</h3></div>
+                                        <div class="event-time"><h3><i class="fa fa-clock-o"></i> {{todo.dueDate|date("H:i")}}</h3></div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <hr>
+                                    <span class="author-note">Created by: {{todo.user}}</span>
+                                </div>
+                                {%if todo.entity%}
+                                    <div class="col-md-12">
+                                        <hr>
+                                        <span class="author-note">Related to: <a href="{{ path('entity', {'id': entityId}) }}">{{todo.entity}}</a></span>
+                                    </div>
+                                {%endif%}
+
+                                <div class="col-md-12" style="margin-bottom: 5%;">
+                                    <hr>
+                                    {{todo.description|raw }}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{%endblock%}

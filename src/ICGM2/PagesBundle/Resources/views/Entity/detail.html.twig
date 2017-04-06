@@ -1,0 +1,315 @@
+{# empty Twig template #}
+{% extends "::base.html.twig" %}
+
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('entities') }}">
+            {% trans %}Contact list{% endtrans %}
+        </a>
+    </li>
+    <li class="active"> {{entity.name}}</li>
+    {%endblock%}
+
+{%block mainContent%}
+
+
+
+    <div class="container">
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm-12">
+                <div class="tabbable">
+
+                    <div class="tab-content">
+                        <div id="panel_overview" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-4">
+                                    <div class="user-left">
+                                        <div class="center">
+                                            <h4>{{entity.name}}</h4>
+
+
+                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                <div class="user-image">
+                                                    <div class="fileupload-new thumbnail">
+                                                        {% if entity.profilePicture %}
+                                                            <img src="{{ asset("uploads/entities/") ~ entity.profilePicture  }} " alt="" >
+                                                        {% else %}
+                                                            {%if entity.sort == "company"%}
+                                                                <img src="{{ asset('bundles/pages/images/Company.png') }} " alt="">
+
+                                                            {%else%}
+                                                                <img src="{{ asset('bundles/pages/images/anonymous.jpg') }} " alt="" >
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>                                          
+
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+
+                                        </div>
+                                        <table class="table table-condensed table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">{% trans %}Contact Information{% endtrans %}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>Email:</td>
+                                                    <td>
+                                                        <a href="">
+                                                            {{entity.email}}
+                                                        </a></td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone:</td>
+                                                    <td>{{entity.phone}}</td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Country{% endtrans %}:</td>
+                                                    <td>
+                                                        {{entity.country}}
+                                                    </td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}City{% endtrans %}:</td>
+                                                    <td>                                                   
+                                                        {{entity.city}}
+                                                    </td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Address{% endtrans %}:</td>
+                                                    <td>                                                   
+                                                        {{entity.address}}
+                                                    </td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Zip Code{% endtrans %}:</td>
+                                                    <td>                                                  
+                                                        {{entity.zipCode}}
+                                                    </td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="table table-condensed table-hover">  
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">{% trans %}General information{% endtrans %}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{% trans %}Creator{% endtrans %}:</td>
+                                                    <td>
+                                                        <a href="{{ path('contributor', {'id': entity.user.id}) }}">
+                                                        {{entity.user}}</td>
+
+                                                    </a>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>{% trans %}Status{% endtrans %}:</td>
+                                                    <td>{{entity.type}}</td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Speciality{% endtrans %}:</td>
+                                                    <td>{{entity.speciality}}</td>
+                                                    <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                {% if entity.website %}
+                                                    <tr>
+                                                        <td>{% trans %}Website{% endtrans %}:</td>
+                                                        <td>{{entity.website}}</td>
+                                                        <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if entity.employeesNumber %}
+                                                    <tr>
+                                                        <td>{% trans %}Employees number{% endtrans %}:</td>
+                                                        <td>{{entity.employeesNumber}}</td>
+                                                        <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if entity.description %}
+                                                    <tr>
+                                                        <td>Description:</td>
+                                                        <td>{{entity.description | raw}}</td>
+                                                        <td><a href="{{ path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                    </tr>
+                                                {% endif %}
+
+
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 col-md-8">
+
+                                    <span class="btn-group pull-right" style="margin-bottom: 2%">
+                                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><i class="fa fa-fw fa-wrench"></i> <span class="hidden-xs">{% trans %}More{% endtrans %}</span>                                                           </button>
+                                        <ul class="dropdown-menu pull-right">                                                            
+
+                                            <!-- <li id="Contacts_detailView_moreAction_LBL_ADD_NOTE">
+                                                 <a href=""><i class="fa fa-fw fa-file-o"></i>   Add Document</a></li> -->
+
+                                            <li id="Contacts_detailView_moreAction_LBL_ADD_EVENT">
+                                                <a href="{{path('event/new', {'entity_id':entity.id})}}"><i class="fa fa-fw fa-calendar-o"></i>   {% trans %}Add Event{% endtrans %}</a>
+                                            </li>
+                                            <!--  <li id="Contacts_detailView_moreAction_LBL_ADD_TASK">
+                                                  <a href="{{path('todo/new', {'entity_id':entity.id})}}"><i class="fa fa-fw fa-file-text-o"></i>   Add To Do</a>
+                                              </li> -->
+                                            <li id="Contacts_detailView_moreAction_Delete_Contact">
+                                                <a href="{{  path('entity/edit', {'id': entity.id}) }}"><i class="fa fa-fw fa-pencil"></i>   {% trans %}Edit{% endtrans %}</a>
+                                            </li>
+                                            <li id="Contacts_detailView_moreAction_Delete_Contact">
+                                                <a href="{{ path('entities/delete', {'id': entity.id}) }}"><i class="fa fa-fw fa-times"></i>   {% trans %}Delete{% endtrans %}</a>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <div class="panel panel-white space20">
+                                        <div class="panel-heading" style="font-weight: bold;">
+                                            <i class="clip-checkmark-2"></i>
+                                            {% trans %}Geolocation{% endtrans %}
+                                            <div class="panel-tools">
+                                                <a class="btn btn-xs btn-link panel-close" href="#">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body panel-scroll height-300">
+                                            <div id="divMap"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-white space20">
+                                        <div class="panel-heading" style="font-weight: bold;">                                           
+                                            {% trans %}Activities{% endtrans %}
+                                            <div class="panel-tools">
+                                                <a class="btn btn-xs btn-link panel-close" href="#">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body panel-scroll height-300">
+                                            {%if empty=="true"%}
+                                                {% trans %}No recent activities{% endtrans %}
+                                            {%else%}
+
+
+                                                <table class="table table-striped table-hover">
+                                                    <tbody>
+
+                                                        {% for event in events %}
+                                                            <tr>
+                                                                <td class="center" style="color: #ADADAD;">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </td>
+
+                                                                <td>
+                                                                    <span class="bold-text text-small"><a href="{{ path("event", {'id': event.id}) }}">{{event.subject}}</a> </span>
+                                                                </td>
+                                                                <td>
+                                                                    {% if event.status =="planned" %}                            
+                                                                        <span class="label label-sm label-success">{% trans %}Planned{% endtrans %}</span>
+                                                                    {% elseif  event.status =="cancelled" %}
+                                                                        <span class="label label-sm label-danger">{% trans %}Cancelled{% endtrans %}</span>
+                                                                    {% else %}
+                                                                        <span class="label label-sm label-warning">{% trans %}Held{% endtrans %}</span>
+                                                                    {% endif %} 
+                                                                </td>
+                                                                <td class="center" style="color: #ADADAD;"><strong>{% trans %}Start{% endtrans %} :</strong> {{event.startDate|date('d-m-Y H:i')}} <strong>{% trans %}End{% endtrans %} :</strong> {{event.endDate|date('d-m-Y H:i')}}</td>
+
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+
+                                            {%endif%}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: PAGE CONTENT-->
+    </div>
+
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+
+
+    {% javascripts    
+           
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+    <script>
+        window.onload = GetMap;
+        var map = null;
+
+        // load Map Content with a handler on click to insert a pushpin
+        function GetMap() {
+
+            Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                    {
+                        callback: function () {
+                            map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                    {
+                                        credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                        mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                        enableClickableLogo: false,
+                                        enableSearchLogo: false,
+                                        center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                        zoom: 5,
+                                        showBreadcrumb: false,
+                                        showDashboard: false
+                                    });
+                            LoadPushPinPosition();
+
+                        }
+                    });
+        }
+
+
+
+        function LoadPushPinPosition() {
+            var l = new Array();
+            var s = "{{entity.position}}";
+            l = s.split(",");
+           
+            var longitude = parseFloat(l[0]);
+            var lattitude = parseFloat(l[1]);
+            var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: false};
+            var pushpin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+            map.entities.push(pushpin);
+            map.setView({center: new Microsoft.Maps.Location(longitude, lattitude), zoom: 13});
+
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('events') }}">
+            {% trans %}Events list{% endtrans %}
+        </a>
+    </li>
+    <li>
+        <a href={{ path('event',{'id':event.id}) }}>
+            {{event.subject}}
+        </a>
+    </li>
+    <li class="active">    {% trans %}Edit{% endtrans %} 
+    </li>
+{%endblock%}
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite'   
+       'bundles/pages/css/summernote/dist/summernote.css'
+  'bundles/pages/js/bootstrap-select/dist/css/bootstrap-select.css'
+  'bundles/pages/js/select2-3.5.1/select2.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <div class="container" >
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+
+                    <div class="panel-body">
+                        <div class="noteWrap col-md-8 col-md-offset-2">
+
+                            <div class="col-md-12">
+                                <div class="errorHandler alert alert-danger no-display">
+                                    <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+                                </div>
+                            </div>
+
+
+                            <form action="{{ path('event/edit', {'id': event.id}) }}" method="post" {{ form_enctype(form) }} >
+                                <div class="col-md-12">
+                                    <div class="form-group">                               
+                                        {{ form_widget(form.subject) }}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="type" style="font-weight: bold;">Type<span class="symbol required"></span></label>
+                                            {{ form_widget(form.type, { 'attr': {'class': 'selectpicker  form-control '} })}}
+                                    </div>
+                                </div>
+
+                                <div class="no-all-day-range">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="endDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}Start Date{% endtrans %}</label><span class="symbol required"></span>
+                                                {{ form_widget(form.startDate) }}
+
+
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="no-all-day-range">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="endDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}End Date{% endtrans %}</label><span class="symbol required"></span>
+                                                {{ form_widget(form.endDate) }}
+
+                                            </div>       
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="status" style="font-weight: bold;">{% trans %}Status{% endtrans %}<span class="symbol required"></span></label>
+                                            {{ form_widget(form.status, { 'attr': {'class': 'selectpicker  form-control event-categories '} })}}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">    
+                                        <label for="qualification" style="font-weight: bold;">Qualification</label>
+                                        {{ form_widget(form.qualification)}}
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="callback" style="font-weight: bold;">{% trans %}Callback{% endtrans %}</label>
+                                        {{ form_widget(form.callback) }}
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="entity" style="font-weight: bold;">{% trans %}Contact Name{% endtrans %}<span class="symbol required"></span></label>
+                                            {{ form_widget(form.entity, { 'attr': {'style': 'width:100% '} }) }}
+                                    </div> 
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="user" style="font-weight: bold;">{% trans %}Assigned To{% endtrans %}</label>
+                                        {{ form_widget(form.user, { 'attr': {'style': 'width:100% '} }) }}
+                                    </div> 
+                                </div>
+
+
+
+                                <div class="col-md-12" style="display: none;" id="locationForm">
+                                    <div class="form-group"  >
+                                        {{ form_widget(form.location, { 'attr': {'style': 'width:100% '} }) }}
+                                    </div>  
+                                </div>
+
+                                <div class="col-md-12">
+                                    <hr>
+                                    <div class="form-group">
+                                        <label for="description" style="font-weight: bold;">{% trans %}Description{% endtrans %}</label>
+                                        {{ form_widget(form.description, { 'attr': {'class': 'summernote'} })}}
+                                    </div>
+                                </div>
+
+                                <div class="clear"></div>
+                                {{ form_rest(form) }}
+
+                                <button class="btn btn-green col-md-4 col-xs-12" type="submit" style="margin-top: 5%;float: right;">
+                                    <i class="fa fa-floppy-o"></i> {% trans %}Submit{% endtrans %}
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+{% javascripts 
+  'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+ 'bundles/pages/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+ 'bundles/pages/css/summernote/dist/summernote.min.js' 
+  'bundles/pages/js/bootstrap-select/js/bootstrap-select.js'
+ 'bundles/pages/js/select2-3.5.1/select2.min.js'
+ 'bundles/pages/js/newEvent.js' 
+
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+
+<script>
+
+
+
+    $('#icgm2_pagesbundle_events_user').select2();
+    $("#icgm2_pagesbundle_events_status option").each(function (index, value) {
+        var option = $(this);
+        if (option.val() === "planned") {
+            option.attr('data-content', "<span class='label label-info'>{% trans %}Planned{% endtrans %}</span>");
+        }
+        else if (option.val() === "cancelled") {
+            option.attr('data-content', "<span class='label label-danger'>{% trans %}Cancelled{% endtrans %}</span>");
+        }
+        else if (option.val() === "done") {
+            option.attr('data-content', "<span class='label label-success'>{% trans %}Done{% endtrans %}</span>");
+        }
+        else if (option.val() === "held") {
+            option.attr('data-content', "<span class='label label-warning'>{% trans %}Held{% endtrans %}</span>");
+        }
+
+    });
+
+    $("#icgm2_pagesbundle_events_type option").each(function (index, value) {
+        var option = $(this);
+
+        if (option.val() === "appointment") {
+
+            option.text("{% trans %}Appointment{% endtrans %}");
+        }
+        else if (option.val() === "meeting") {
+            option.text("{% trans %}Meeting{% endtrans %}");
+        }
+        else if (option.val() === "workshop") {
+            option.text("{% trans %}Workshop{% endtrans %}");
+        }
+        else if (option.val() === "other") {
+            option.text("{% trans %}Other{% endtrans %}");
+        }
+
+    });
+
+
+</script>
+
+
+{% endblock %}

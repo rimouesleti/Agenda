@@ -1,0 +1,128 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('todos') }}">
+            Todos list
+        </a>
+    </li>
+    <li class="active">   New Todo 
+    </li>
+{%endblock%}
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite'  
+ 'bundles/pages/js/select2-3.5.1/select2.css' 
+'bundles/pages/js/bootstrap-select/dist/css/bootstrap-select.css'
+
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <div class="container" style="margin-top: 20px;" >
+        <div class="panel panel-white">
+            <div class="panel-body">
+                <div class="noteWrap col-md-8 col-md-offset-2">
+                    <h3>Add new todo</h3>
+                    <div class="col-md-12">
+                        <div class="errorHandler alert alert-danger no-display">
+                            <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+                        </div>
+                    </div>
+                    <form action="{{ path('todo/new') }}" method="post" {{ form_enctype(form) }} >
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">                               
+                                    {{ form_widget(form.subject , { 'attr': {'placeholder': 'Subject ...'} }) }}
+                                </div>
+                            </div>
+                            <div class="no-all-day-range">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="endDate"><i class="fa fa-fw fa-clock-o"></i>Start Date</label>
+                                            {{ form_widget(form.startDate) }}
+
+
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="no-all-day-range">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="dueDate"><i class="fa fa-fw fa-clock-o"></i> Due Date</label>
+                                            {{ form_widget(form.dueDate) }}
+
+                                        </div>       
+                                    </div>
+                                </div>
+                            </div>  
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_label(form.status, 'Status') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.status, { 'attr': {'class': 'selectpicker form-control event-categories '} })}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_label(form.entity, 'Entity Name') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.entity, { 'attr': {'style': 'width:100% '} }) }}
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_label(form.user, 'User Name') }}<span class="symbol required"></span>
+                                    {{ form_widget(form.user, { 'attr': {'style': 'width:100% ','class': 'selectpicker form-control '} }) }}
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_label(form.description, 'Description') }}
+                                    {{ form_widget(form.description, { 'attr': {'class': 'summernote'} })}}
+                                </div>
+                            </div>
+
+                            {{ form_rest(form) }}
+                            <button class="btn btn-green col-md-4 col-xs-12" type="submit" style="margin-top: 5%;float: right;">
+                                <i class="fa fa-floppy-o"></i> Submit
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% javascripts 
+  'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+ 'bundles/pages/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+ 'bundles/pages/css/summernote/dist/summernote.min.js' 
+  'bundles/pages/js/bootstrap-select/js/bootstrap-select.js'
+'bundles/pages/js/select2-3.5.1/select2.min.js'
+ 'bundles/pages/js/newTodo.js' 
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+    {%if entity_id %}
+        <script>
+
+            $("#icgm2_pagesbundle_todos_entity").select2("val", "{{entity_id}}");
+
+        </script>
+    {%else%}
+        <script>
+
+            $('#icgm2_pagesbundle_todos_entity').select2('val', $('#icgm2_pagesbundle_todos_entity option:eq(1)').val());
+
+        </script>  
+    {%endif%}
+
+{% endblock %}

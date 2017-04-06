@@ -1,0 +1,70 @@
+{% extends "::base.html.twig" %}
+
+{%block breadcrumb%}
+
+
+    <li class="active">   Messages Box
+    </li>
+{% endblock %}
+
+{% block mainContent %}
+
+   
+    <div class="container" style="margin: 1%;">
+         <a href="{{ url('fos_message_thread_new' )}}" class="btn btn-green">{% trans from 'FOSMessageBundle' %}<i class="fa fa-envelope-o"></i> New message {% endtrans %}</a>
+
+    </div>
+     
+   
+
+    <div class="container">
+        <!-- start: PAGE CONTENT -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
+                        <li class="active">
+                            <a data-toggle="tab" href="#panel_overview">
+                                Inbox
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#panel_edit_account">
+                                Sent
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#panel_projects">
+                                Trash
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="panel_overview" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-4">
+
+                                </div>
+                                <div class="col-sm-7 col-md-8">
+                                   {% include 'FOSMessageBundle:Message:threads_list.html.twig' with {'threads': threads} %}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="panel_edit_account" class="tab-pane fade">
+
+                        </div>
+                        <div id="panel_projects" class="tab-pane fade">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: PAGE CONTENT-->
+    </div>
+
+
+
+
+{% endblock %}

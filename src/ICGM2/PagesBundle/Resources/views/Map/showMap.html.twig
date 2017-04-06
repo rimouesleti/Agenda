@@ -1,0 +1,267 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+
+
+
+
+
+
+{% endblock %}
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite'   
+ 'bundles/pages/js/select2-3.5.1/select2.css'
+'bundles/pages/js/bootstrap-select/dist/css/bootstrap-select.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+
+    <div class="well">
+        <div data-role="content">
+            <div style="padding:1em;">
+
+                <div class="media-container">
+                    <div class="" style="background-color: #e9e9e9; height: 7px;margin-bottom: 10px;padding: 0;text-align: center; margin-top: 10px;">
+                        <span style="background-color: #f5f5f5;padding: 0 5px;position: relative;top: -7px;color: gray;font-weight: bold;">{% trans %}Event Search{% endtrans %}</span>
+                    </div>
+
+                    <form id="form_event_search" method="post" style="margin-bottom: 10px;">
+                        <div class="input-group" style="height: 100%;">
+
+
+                            {{ form_widget(form.keywords , { 'attr': {'placeholder': 'Event Name, Key words'|trans} }) }}
+                            <span class="input-group-btn mainSearchBTNContainer" style="display: table-cell;"> 
+                                <button class="btn btn-default hidden-xs" type="reset" id="resetSearchBTN" onclick="$('#advancedSearchReset').click();" style="background: #e6e6e6;"><i class="fa fa-times fa-fw" style="color:gray;"></i></button>
+                                <button class="btn btn-default" type="submit" style="background: #e6e6e6;"><i class="fa fa-search fa-fw" style="color:#1d53b7"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </form>
+
+
+                    <div class="panel-group" id="bigaccordion">
+                        <div class="panel panel-default">
+                            <div id="bigcollapse" class="panel-collapse collapse" style="height: 0px;">
+                                <div class="panel-body">
+
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+
+                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingOne">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                            Date
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div class="panel-body">
+
+                                                        <div class="no-all-day-range">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <label for="startDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}Start Date{% endtrans %}</label>
+                                                                        <input class="form-control" id="startDateInput">
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>  
+                                                        </div>
+                                                        <div class="no-all-day-range">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <label for="endDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}End Date{% endtrans %}</label>
+                                                                        <input class="form-control" id="endDateInput">
+
+                                                                    </div>       
+                                                                </div>
+                                                            </div>
+                                                        </div>  
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                            Type
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body">
+                                                        <select class="form-control">
+                                                            <option></option>
+                                                            <option value="appointment">{% trans %}Appointment{% endtrans %}</option>
+                                                            <option value="meeting">{% trans %}Meeting{% endtrans %}</option>
+                                                            <option value="workshop">{% trans %}Workshop{% endtrans %}</option>
+                                                            <option value="other">{% trans %}Other{% endtrans %}</option>
+                                                        </select>    
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingThree">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                            {% trans %}Status{% endtrans %} 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                    <div class="panel-body">
+                                                        <select class="selectpicker" data-width="100%">
+                                                            <option></option>
+                                                            <option data-content="<span class='label label-info'>{% trans %}Planned{% endtrans %}</span>" value="planned">{% trans %}Planned{% endtrans %}</option>
+                                                            <option data-content="<span class='label label-success'>{% trans %}Done{% endtrans %}</span>" value="done">{% trans %}Done{% endtrans %}</option>
+                                                            <option data-content="<span class='label label-warning'>{% trans %}Held{% endtrans %}</span>" value="held">{% trans %}Held{% endtrans %}</option>
+                                                            <option data-content="<span class='label label-danger'>{% trans %}Cancelled{% endtrans %}</span>" value="cancelled">{% trans %}Cancelled{% endtrans %}</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div style="margin-top: 10px;">
+                                        <button id="advancedSearchBTN" class="btn btn-green btn-sm "><i class="fa fa-search fa-fw"></i> 
+                                            {% trans %}Search{% endtrans %}</button>
+                                        <button class="btn btn-default btn-sm " id="advancedSearchReset"><i class="fa fa-refresh fa-fw"></i> {% trans %}Cancel{% endtrans %}</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <a id="collapseBTN" class="text-decoration-none collapsed" data-toggle="collapse" data-parent="#bigaccordion" href="#bigcollapse">
+                                <div class="panel-heading" style="text-align: center; background: #e9e9e9 !important; min-height: 20px;">
+                                    <h4 style="font-size: 12px;" class="panel-title">
+
+                                        <i class="fa fa-fw fa-chevron-down"></i>  {% trans %}Advanced search{% endtrans %}<i class="fa fa-fw fa-chevron-down"></i>
+
+                                    </h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div id="divMap" style="height:400px;position:relative;"></div>
+            </div>
+
+
+
+        </div><!-- /content -->
+
+    </div>
+
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+    {% javascripts 
+        'bundles/user/js/jQuery/jquery-2.1.1.min.js'           
+        'bundles/pages/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+        'bundles/pages/js/bootstrap-select/js/bootstrap-select.js'
+        'bundles/pages/js/select2-3.5.1/select2.min.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+
+
+    <script>
+
+
+
+        $(document).ready(function () {
+
+            $("#form_event_search").submit(function () {
+               
+                var keywords = $("#eventSearch_keywords").val();
+                var DATA = 'keywords=' + keywords;
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('searchForEvent')}}",
+                    data: DATA,
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+
+                    }
+                });
+                return false;
+            });
+
+
+            $(".toolbar").hide();
+            $("#startDateInput").datetimepicker({
+                startDate: new Date()
+            });
+
+            $("#endDateInput").datetimepicker({
+                startDate: new Date()
+            });
+
+
+            window.onload = GetMap;
+            var map = null;
+
+
+
+            function getcurrentlocation(args)
+            {
+                startData.location = new Microsoft.Maps.Location(args.position.coords.latitude, args.position.coords.longitude);
+                //localStorage.setItem('latitude', args.position.coords.latitude);
+                //localStorage.setItem('longitude', args.position.coords.longitude);
+            }
+
+
+            function GetMap() {
+
+
+                Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                        {
+                            callback: function () {
+                                map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                        {
+                                            credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                            enableClickableLogo: false,
+                                            enableSearchLogo: false,
+                                            center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                            zoom: 3,
+                                            showBreadcrumb: false,
+                                            theme: new Microsoft.Maps.Themes.BingTheme()
+                                        });
+                                var geoLocationProvider = new Microsoft.Maps.GeoLocationProvider(map);
+                                geoLocationProvider.getCurrentPosition({
+                                    successCallback: getcurrentlocation,
+                                    errorCallback: function (object) {
+                                        displayAlert('Veuillez ouvrir votre GPS');
+                                    }});
+
+                            }
+                        });
+
+            }
+
+
+        });
+
+
+
+    </script>  
+
+
+
+
+{% endblock %}

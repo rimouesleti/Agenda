@@ -1,0 +1,165 @@
+#message:
+#    resource: "@MessageBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+   
+home:
+   pattern: /home
+   defaults: {_controller:PagesBundle:Default:index}
+
+map:
+   pattern: /map
+   defaults: {_controller:PagesBundle:Map:index}
+ 
+
+
+history/reload:
+   pattern: /history/reload
+   defaults: {_controller:PagesBundle:Default:reloadHistory}
+   
+todos:
+   pattern: /todo/show
+   defaults: {_controller:PagesBundle:Todo:showAll}
+
+todo:
+   pattern: /todo/show/{id}
+   defaults: {_controller:PagesBundle:Todo:show}
+
+todo/new:
+   pattern: /todo/new/{entity_id}
+   defaults: {_controller:PagesBundle:Todo:new, entity_id:null}
+
+todo/delete:
+   pattern: /todo/delete/{id}
+   defaults: {_controller:PagesBundle:Todo:delete}
+
+todo/edit:
+   pattern: /todo/edit/{id}
+   defaults: {_controller:PagesBundle:Todo:edit}
+
+
+#message/new:
+#   pattern: /message/new/{receiver}
+#   defaults: {_controller:PagesBundle:Message:new}
+
+entity:
+   pattern: /entity/{id}
+   defaults: {_controller:PagesBundle:Entity:show}
+   
+entity/edit:
+   pattern: /entity/edit/{id}
+   defaults: {_controller:PagesBundle:Entity:edit}
+
+
+entities:
+   pattern: /entities/show
+   defaults: {_controller:PagesBundle:Entity:showAll}
+
+#entities/new:
+#   pattern: /entities/new
+#   defaults: {_controller:PagesBundle:Entity:new}
+
+entities/new:
+   pattern: /entities/new/{event}
+   defaults: {_controller:PagesBundle:Entity:new, event:null}
+   
+entities/delete:
+   pattern: /entities/delete/{id}
+   defaults: {_controller:PagesBundle:Entity:delete}
+   
+events:
+   pattern: /events/show
+   defaults: {_controller:PagesBundle:Event:showAll}
+
+calendar:
+   pattern: /calendar/show/{id}
+   defaults: {_controller:PagesBundle:Calendar:show}
+   
+
+event:
+   pattern: /event/{id}
+   defaults: {_controller:PagesBundle:Event:show}
+   
+event/new:
+   pattern:  /events/new/{entity_id}
+   defaults: {_controller:PagesBundle:Event:new, entity_id:null}
+   
+event/delete:
+   pattern: /event/delete/{id}
+   defaults: {_controller:PagesBundle:Event:delete}
+
+event/edit:
+    pattern: /event/edit/{id}
+    defaults: {_controller:PagesBundle:Event:edit} 
+
+
+   
+histories:
+   pattern: /histories/show
+   defaults: {_controller:PagesBundle:History:show}
+   
+contributors:
+   pattern: /contributors/show
+   defaults: {_controller:UserBundle:Contributors:showcontributors}
+
+contributor/delete:
+   pattern: /contributor/delete/{id}
+   defaults: {_controller:UserBundle:Contributors:deletecontributors}
+
+contributor:
+   pattern: /contributor/show/{id}
+   defaults: {_controller:UserBundle:Contributors:showcontributor}
+
+contributor/edit:
+   pattern: /contributor/edit/{id}
+   defaults: {_controller:UserBundle:Contributors:editcontributors}
+   
+location/new:
+   pattern: /location/new
+   defaults: {_controller:PagesBundle:Event:newLocation}
+   
+
+
+
+
+
+searchForEvent:
+  pattern: /search
+  defaults: {_controller:PagesBundle:Map:eventSearch}
+  requirements:
+    _method: POST
+    
+    
+    
+    
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+    
+fos_user_profile_edit:
+    pattern: /profile/edit/{id}
+    defaults: { _controller: FOSUserBundle:Profile:edit }
+    requirements:
+        _method: GET|POST
+        
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
+
+
+
+#fos_message:
+#    resource: "@FOSMessageBundle/Resources/config/routing.xml"
+#    prefix: /communication

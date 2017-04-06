@@ -1,0 +1,32 @@
+parameters:
+#    user.example.class: ICGM2\UserBundle\Example
+
+services:
+#    user.example:
+#        class: %user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    icgm2_user_registration.form.type:
+        class: ICGM2\UserBundle\Form\UserType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: icgm2_userbundle_user}
+            
+    icgm2_user.edit.form.type:
+        class: ICGM2\UserBundle\Form\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: icgm2_edit_profile}
+            
+            
+    icgm2.language.interactive_login_listener:
+        class: ICGM2\UserBundle\EventListener\LanguageListener
+        calls:
+            - [ setSession, [@session] ]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: setLocaleForAuthenticatedUser }
+
+    icgm2.language.kernel_request_listener:
+        class: ICGM2\UserBundle\EventListener\LanguageListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: setLocaleForUnauthenticatedUser }

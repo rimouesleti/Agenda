@@ -1,0 +1,254 @@
+{% extends "::base.html.twig" %}
+
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('contributors') }}">
+            {% trans %}Contributors List{% endtrans %}
+        </a>
+    </li>
+    <li class="active"> {{user.firstName}} {{user.lastName}}</li>
+    {%endblock%}
+    {%block mainContent%}
+    <div class="container">
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-sm-12">
+                <div class="tabbable">
+
+                    <div class="tab-content">
+                        <div id="panel_overview" class="tab-pane fade in active">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-4">
+                                    <div class="user-left">
+                                        <div class="center" style="margin-bottom: 25px;">
+                                            <h4>{{user.firstName}} {{user.lastName}}</h4>
+                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                <div class="user-image">
+                                                    <div class="fileupload-new thumbnail">
+                                                        {% if user.path %}
+                                                            <img src="{{ asset("uploads/user/profilepics/") ~ user.path  }}" alt="userPic" >
+                                                        {% else %}
+                                                            <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="userPic" ></td>
+
+                                                        {% endif %}
+                                                    </div>                                          
+
+                                                </div>
+                                            </div>
+                                            <a href="{{path('calendar', { 'id': user.id })}}" >
+                                                <span class="label label-sm label-warning"><i class="fa fa-calendar"></i> {% trans %}Show calendar{% endtrans %}</span>
+                                            </a>
+
+
+
+
+                                        </div>
+                                        <table class="table table-condensed table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">{% trans %}Contact Information{% endtrans %}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>Email:</td>
+                                                    <td>
+                                                        <a href="">
+                                                            {{user.email}}
+                                                        </a></td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone:</td>
+                                                    <td>{{user.Mphone}}</td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Country{% endtrans %}:</td>
+                                                    <td>
+                                                        {{user.country}}
+                                                    </td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}City{% endtrans %}:</td>
+                                                    <td>                                                   
+                                                        {{user.city}}
+                                                    </td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Address{% endtrans %}:</td>
+                                                    <td>                                                   
+                                                        {{user.address}}
+                                                    </td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Zip Code{% endtrans %}:</td>
+                                                    <td>                                                  
+                                                        {{user.zipCode}}
+                                                    </td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-condensed table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">{% trans %}General information{% endtrans %}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Departement</td>
+                                                    <td>{{user.departement}}</td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Language{% endtrans %}</td>
+                                                    <td>{{user.language}}</td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{% trans %}Last Logged In{% endtrans %}</td>
+                                                    <td>{{user.lastLogin|date('Y-m-d H:i')}}</td>
+                                                    <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>Role</td>
+                                                    <td><span class="label label-sm label-info">{% for role in user.roles %}
+                                                            {% if role == 'ROLE_ADMIN' %}
+                                                                Administrator
+                                                            {% else %}
+                                                                User
+                                                            {% endif %}  
+                                                            {% endfor %}</span></td>
+                                                        <td><a href="#panel_edit_account" class="show-tab"><i class="fa fa-pencil edit-user-info"></i></a></td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 col-md-8">
+
+                                        <div class="panel panel-white space20">
+                                            <div class="panel-heading" style="font-weight: bold;">
+
+                                                {% trans %}Geolocation{% endtrans %}
+
+                                                <button id="eventsBTN" class="btn btn-link"><span class="pull-right label label-sm label-success"><i class="fa fa-map-marker"></i> {% trans %}Show today events{% endtrans %}</span></button>
+
+                                            </div>
+                                            <div class="panel-body panel-scroll height-300">
+                                                <div id="divMap"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end: PAGE CONTENT-->
+
+        </div>
+
+
+        {% javascripts 
+ 'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+
+        {% endjavascripts %}                                                  
+
+        <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+
+        <script>
+            window.onload = GetMap;
+            var map = null;
+
+            // load Map Content with a handler on click to insert a pushpin
+            function GetMap() {
+
+                Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                        {
+                            callback: function () {
+                                map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                        {
+                                            credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                            enableClickableLogo: false,
+                                            enableSearchLogo: false,
+                                            center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                            zoom: 5,
+                                            showBreadcrumb: false,
+                                            showDashboard: false,
+                                            theme: new Microsoft.Maps.Themes.BingTheme()
+                                        });
+
+                                LoadSearchModule();
+
+                            }
+                        });
+            }
+
+            function LoadSearchModule() {
+                var l = new Array();
+                var s = "{{user.position}}";
+                l = s.split(",");
+
+                var longitude = parseFloat(l[0]);
+                var lattitude = parseFloat(l[1]);
+                var pushpinOptions = {icon: '{{ asset('bundles/pages/images/defaultPP.png') }}', draggable: false};
+                var pushpin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+                map.entities.push(pushpin);
+                map.setView({center: new Microsoft.Maps.Location(longitude, lattitude), zoom: 13});
+
+            }
+
+            $("#eventsBTN").click(function () {
+                var boundsMap = new Array();
+
+
+            {% for event in events %}
+                {% if today|date("d-m-Y")==event.startDate|date("d-m-Y") %}
+                        var l = new Array();
+                        var s = "{{event.position}}";
+                        l = s.split(",");
+                        var longitude = parseFloat(l[0]);
+                        var lattitude = parseFloat(l[1]);
+
+                        var pushpinOptions = {icon: "{{ asset('bundles/pages/images/ppin/'~ event.status ~'.png') }}", draggable: false};
+
+
+                        var pushpin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+                        map.entities.push(pushpin);
+                        map.entities.push(new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(longitude, lattitude), {title: '<font color="#FF9900"> {{event.subject}}</font>', description: '{{event.startDate|date('d-m-Y H:i')}} - {{event.endDate|date('d-m-Y H:i')}}', pushpin: pushpin}));
+
+                        boundsMap.push(new Microsoft.Maps.Location(longitude, lattitude));
+                {% endif %}
+            {% endfor %}
+
+                    if (boundsMap.length > 0) {
+                        map.setView({bounds: Microsoft.Maps.LocationRect.fromLocations(boundsMap), padding: 100});
+                    }
+                    else {
+                        alert("{% trans %}No events for Today{% endtrans %}.")
+                    }
+
+
+
+                });
+
+        </script>
+        {% endblock %}

@@ -1,0 +1,154 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li class="active">{% trans %}Contributors List{% endtrans %} </li>
+    {%endblock%}
+    {% block mainContent %}
+        {% stylesheets  filter='cssrewrite' 
+ 'bundles/pages/css/jquery.dataTables.css'
+
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <div class="container" >
+
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+
+                        <div class="panel-tools">
+                            <div class="dropdown">
+                                <a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-grey">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-light pull-right" role="menu">
+                                    <li>
+                                        <a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+                                    </li>
+                                    <li>
+                                        <a class="panel-refresh" href="#">
+                                            <i class="fa fa-refresh"></i> <span>Refresh</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="panel-expand" href="#">
+                                            <i class="fa fa-expand"></i> <span>Fullscreen</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="panel-body">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="col-md-12 space20">
+                                <a class="btn btn-green add-row" href="{{path('fos_user_registration_register')}}">
+                                    {% trans %}Add New{% endtrans %} <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                            <table class="table table-striped table-hover table-full-width display" cellspacing="0" width="100%" id="example">
+
+                                <thead>
+                                    <tr>
+                                        <th class="center">#</th>
+                                        <th class="center">{% trans %}Name{% endtrans %}</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th class="hidden-xs">{% trans %}Last Logged In{% endtrans %}</th>
+                                        <th class="hidden-xs">Role</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in Users %}	
+                                        <tr>
+
+                                            <td class="center">
+                                                {% if user.path %}
+                                                    <img src="{{ asset("uploads/user/profilepics/") ~ user.path  }} " alt="" width="25" height="25">
+                                                {% else %}
+                                                    <img src="{{ asset('bundles/pages/images/anonymous.jpg') }}" alt="" width="25" height="25"></td>
+
+                                            {% endif %}
+                                            <td>{{user.lastName}} {{user.firstName}}</td>
+                                            <td>{{user.email}}</td>                           
+                                            <td >{{user.mphone}}</td>
+                                            <td class="hidden-xs">{{user.lastLogin|date('Y-m-d H:i')}}</td>
+                                            <td class="hidden-xs">{% for role in user.roles %}
+                                                {% if role == 'ROLE_ADMIN' %}
+                                                    <span class="label label-sm label-danger">Admin</span>
+                                                {% else %}
+                                                    <span class="label label-sm label-success">User</span>
+                                                {% endif %}  
+                                            {% endfor %}</td>
+
+                                        <td class="center">
+                                            <div class="visible-md visible-lg hidden-sm hidden-xs">
+                                                <a href="{{ path('fos_user_profile_edit', {'id': user.id}) }}" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="{% trans %}Edit{% endtrans %}"><i class="fa fa-edit"></i></a>
+                                                <a href="{{ path('contributor', {'id': user.id}) }}" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="{% trans %}Show{% endtrans %}"><i class="fa fa-share"></i></a>
+                                                <a href="{{ path('contributor/delete', {'id': user.id}) }}" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="{% trans %}Remove{% endtrans %}" ><i class="fa fa-times fa fa-white"></i></a>
+                                                <a href="{{path('calendar', { 'id': user.id })}}" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="{% trans %}Calendar{% endtrans %}" ><i class="fa fa-calendar fa fa-white"></i></a>
+
+                                            </div>
+                                            <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-green dropdown-toggle btn-sm" data-toggle="dropdown" href="#">
+                                                        <i class="fa fa-cog"></i> <span class="caret"></span>
+                                                    </a>
+                                                    <ul role="menu" class="dropdown-menu pull-right dropdown-dark">
+                                                        <li>
+                                                            <a role="menuitem" tabindex="-1" href="{{ path('fos_user_profile_edit', {'id': user.id}) }}">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a role="menuitem" tabindex="-1" href="{{ path('contributor', {'id': user.id}) }}">
+                                                                <i class="fa fa-share"></i> Show
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a role="menuitem" tabindex="-1" href="{{ path('contributor/delete', {'id': user.id}) }}">
+                                                                <i class="fa fa-times"></i> Remove
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div></td>
+
+                                    </tr>
+
+
+                                    {% endfor %}	
+                                    </tbody>
+                                </table>
+                                {%else%}
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-exclamation-triangle"></i> {% trans %}You don't have enough privilege to view this list{% endtrans %}.
+
+                                    </div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                <!-- end: DYNAMIC TABLE PANEL -->
+                            </div>
+                        </div>
+
+                        <!-- end: PAGE CONTENT-->
+
+
+                    </div>
+
+                    {% javascripts 
+        'bundles/user/js/jQuery/jquery-2.1.1.min.js'   
+         'bundles/pages/js/jquery.dataTables.min.js'    
+            'bundles/pages/js/table-data.js' 
+                    %}
+                    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+                    {% endjavascripts %}
+
+                    {%endblock%}

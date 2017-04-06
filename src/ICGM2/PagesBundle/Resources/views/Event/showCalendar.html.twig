@@ -1,0 +1,139 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li class="active"> {% trans %}Calendar{% endtrans %}</li>
+    {%endblock%}
+    {% block mainContent %}
+        {% stylesheets  filter='cssrewrite' 
+ 'bundles/pages/css/perfect-scrollbar/src/perfect-scrollbar.css'  
+        'bundles/pages/js/bootstrap-timepicker/css/bootstrap-timepicker.css'
+        'bundles/pages/js/fullcalendar/fullcalendar/fullcalendar.css'
+        'bundles/pages/js/fullcalendar/fullcalendar/fullcalendar.print.css'           
+        %}
+
+
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <style type="text/css">
+        .fc-event .fc-event-title:before, .event-category:before {
+            display: none;
+        }</style>
+
+    <div class="well">
+        <div id='calendar'></div>
+
+    </div>
+
+
+    {% javascripts 
+        'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+        
+        'bundles/pages/js/perfect-scrollbar/src/jquery.mousewheel.js'          
+        'bundles/pages/js/bootstrap-timepicker/js/bootstrap-timepicker.js'
+
+        'bundles/pages/js/moment/min/moment.min.js'
+        'bundles/pages/js/fullcalendar/lib/jquery-ui.custom.min.js' 
+      
+        'bundles/pages/js/fullcalendar/fullcalendar/fullcalendar.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+
+
+    <script>
+
+
+
+        $(document).ready(function () {
+
+            function redirect() {
+                window.location = "{{ path('event/new')}}";
+            }
+            var _mn = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            var _mns = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+            var _dn = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            var _dns = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+
+            $('#calendar').fullCalendar({                {% if app.user.language == "fr" %}
+    
+
+
+                monthNames: _mn,
+                monthNamesShort: _mns,
+                dayNames: _dn,
+                dayNamesShort: _dns,{% endif %}
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'all,mandatory,not_mandatory,month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                selectable: true,
+                selectHelper: true,
+                eventLimit: true,
+                events: [{% for evt in events %}
+                    {
+                        id: '{{ evt.id }}',
+                        title: '{{ evt.subject }}',
+                        start: '{{ evt.startDate|date("m/d/Y H:m:s")  }}',
+                        end: '{{ evt.endDate|date("m/d/Y H:m:s")  }}',
+                        description: '{{evt.status}}'
+                    }
+    {% if loop.last %}{% else %},{% endif %}{% endfor %}
+                    , ],
+                eventRender: function (event, element) {
+                    element.children('.fc-event-inner').css({'color': 'white'});
+                    if (event.description === "planned") {
+                        element.children('.fc-event-inner').css({'background-color': '#5bc0de'});
+
+                    }
+                    else if (event.description === "held") {
+                        element.children('.fc-event-inner').css({'background-color': '#f0ad4e'});
+
+
+                    }
+                    else if (event.description === "done") {
+                        element.children('.fc-event-inner').css({'background-color': '#5cb85c'});
+
+
+                    }
+                    else {
+                        element.children('.fc-event-inner').css({'background-color': '#d9534f'});
+
+                    }
+
+
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+
+
+
+                    var url = '{{ path("event", {'id': 'id'}) }}';
+                    url = url.replace("id", calEvent.id);
+                    window.location = url;
+                    $(this).css('border-color', 'red');
+
+                },
+                dayClick: function (date, jsEvent, view) {
+                    redirect();
+                    // console.log(date.format());
+
+                    //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+                    //   console.log('Current view: ' + view.name);
+
+
+
+                }
+            });
+        });
+
+
+
+    </script>  
+
+
+
+
+    {% endblock %}

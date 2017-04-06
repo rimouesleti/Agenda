@@ -1,0 +1,168 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li class="active">{% trans %}Events list{% endtrans %}</li>
+    {%endblock%}
+    {% block mainContent %}
+        {% stylesheets  filter='cssrewrite' 
+ 'bundles/pages/css/jquery.dataTables.css'
+
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <div class="container" >
+
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+
+                        <div class="panel-tools">
+                            <div class="dropdown">
+                                <a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-grey">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-light pull-right" role="menu">
+                                    <li>
+                                        <a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+                                    </li>
+                                    <li>
+                                        <a class="panel-refresh" href="#">
+                                            <i class="fa fa-refresh"></i> <span>Refresh</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="panel-expand" href="#">
+                                            <i class="fa fa-expand"></i> <span>Fullscreen</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="col-md-12 space20">
+                                <a class="btn btn-green add-row" href="{{path('event/new')}}">
+                                    {% trans %}Add New{% endtrans %} <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                            <table class="table table-striped table-hover table-full-width display"  cellspacing="0" width="100%" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>{% trans %}Subject{% endtrans %}</th>                               
+                                        <th class="hidden-xs">{% trans %}Contact{% endtrans %}</th>
+                                        <th class="hidden-xs">{% trans %}Contributor{% endtrans %}</th>
+                                        <th class="hidden-xs">{% trans %}Status{% endtrans %}</th>
+                                        <th class="hidden-xs">{% trans %}Callback{% endtrans %}</th>
+                                        <th>{% trans %}Start Date{% endtrans %}</th>
+                                        <th>{% trans %}End Date{% endtrans %}</th>                                   
+                                        <th></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in events %}
+                                        <tr>
+                                            <td >
+                                                {{event.subject }}
+                                            </td>                      
+                                            <td class="hidden-xs" >{{event.entity}}</td>
+                                            <td class="hidden-xs">
+                                                {% for user in event.user %}
+                                                    {{ user.firstname }} {{ user.lastname }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td class="hidden-xs">  
+                                                {% if event.status =="planned" %}                            
+                                                    <span class="label label-sm label-info">{% trans %}Planned{% endtrans %}</span>
+                                                {% elseif  event.status =="done" %}
+                                                    <span class="label label-sm label-success">{% trans %}Done{% endtrans %}</span>
+                                                {% elseif  event.status =="cancelled" %}
+
+                                                    <span class="label label-sm label-danger">{% trans %}Cancelled{% endtrans %}</span>
+                                                {% else %}
+                                                    <span class="label label-sm label-warning">{% trans %}Held{% endtrans %}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="hidden-xs">
+                                                {%if  event.callback==0%}{% trans %}Yes{% endtrans %}
+                                                {%else%}No
+                                                {%endif%}
+                                            </td>
+                                            <td>{{ event.startDate|date('Y-m-d H:i') }}</td>
+                                            <td>{{ event.endDate |date("Y-m-d H:i")}}</td>
+
+
+
+                                            <td class="center">
+                                                <div class="visible-md visible-lg hidden-sm hidden-xs">
+                                                    <a href="{{ path('event/edit', {'id': event.id}) }}" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="{% trans %}Edit{% endtrans %}"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ path('event', {'id': event.id}) }}" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="{% trans %}Show{% endtrans %}"><i class="fa fa-share"></i></a>
+                                                    <a href="{{ path('event/delete', {'id': event.id}) }}" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="{% trans %}Remove{% endtrans %}" ><i class="fa fa-times fa fa-white"></i></a>
+                                                </div>
+                                                <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-green dropdown-toggle btn-sm" data-toggle="dropdown" href="#">
+                                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                                        </a>
+                                                        <ul role="menu" class="dropdown-menu pull-right dropdown-dark">
+                                                            <li>
+                                                                <a role="menuitem" tabindex="-1" href="{{ path('event/edit', {'id': event.id}) }}">
+                                                                    <i class="fa fa-edit"></i> {% trans %}Edit{% endtrans %}
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a role="menuitem" tabindex="-1" href="{{ path('event', {'id': event.id}) }}">
+                                                                    <i class="fa fa-share"></i> {% trans %}Show{% endtrans %}
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a role="menuitem" tabindex="-1" href="{{ path('event/delete', {'id': event.id}) }}">
+                                                                    <i class="fa fa-times"></i> {% trans %}Remove{% endtrans %}
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        {%else%}
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fa fa-exclamation-triangle"></i> {% trans %}You don't have enough privilege to view this list{% endtrans %}.
+
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- end: DYNAMIC TABLE PANEL -->
+            </div>
+        </div>
+
+        <!-- end: PAGE CONTENT-->
+
+        <div class="subviews">
+            <div class="subviews-container"></div>
+        </div>
+    </div>
+
+    {% javascripts 
+         'bundles/user/js/jQuery/jquery-2.1.1.min.js'   
+         'bundles/pages/js/jquery.dataTables.min.js'    
+         'bundles/pages/js/table-data.js' 
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{%endblock%}

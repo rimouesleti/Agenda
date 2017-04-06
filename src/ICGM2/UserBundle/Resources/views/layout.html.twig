@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Template Name: Rapido - Responsive Admin Template build with Twitter Bootstrap 3.x Version: 1.0 Author: ClipTheme -->
+<!--[if IE 8]><html class="ie8 no-js" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9 no-js" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+    <!--<![endif]-->
+    <!-- start: HEAD -->
+    <head>
+        <title>ICGM Login</title>
+        <!-- start: META -->
+        <meta charset="utf-8" />
+        <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- end: META -->
+        <!-- start: MAIN CSS -->
+
+
+
+                  {% stylesheets  filter='cssrewrite'  
+             'bundles/user/css/styles-responsive.css'
+            'bundles/user/css/styles.css'         
+             'bundles/user/css/font-awesome/css/font-awesome.min.css'
+            'bundles/user/css/animate.css/animate.min.css'
+           '../app/Resources/public/css/plugins/bootstrap/css/bootstrap.min.css'
+            
+     
+           %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+           {% endstylesheets %}
+
+
+        <!--[if IE 7]>
+        <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome-ie7.min.css">
+        <![endif]-->
+        <!-- end: MAIN CSS -->
+        <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
+        <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
+    </head>
+    <!-- end: HEAD -->
+    <!-- start: BODY -->
+    <body class="login">
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+
+        {% javascripts 
+        'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+        'bundles/user/js/jquery-ui/jquery-ui-1.10.2.custom.min.js' 
+        'bundles/user/js/bootstrap/js/bootstrap.min.js' 
+        'bundles/user/js/iCheck/jquery.icheck.min.js' 
+        'bundles/user/js/jquery.transit/jquery.transit.js' 
+        'bundles/user/js/TouchSwipe/jquery.touchSwipe.min.js' 
+        'bundles/user/js/login.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+        <script>
+            jQuery(document).ready(function() {
+                Login.init();
+            });
+        </script>
+    </body>
+    <!-- end: BODY -->
+</html>

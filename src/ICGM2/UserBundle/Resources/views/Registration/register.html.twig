@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('contributors') }}">
+            {% trans %}Contributors List{% endtrans %}
+        </a>
+    </li>
+
+    <li class="active">   {% trans %}Add contributor{% endtrans %}
+    </li>
+{%endblock%}
+{% block mainContent %}
+
+    <div class="container" >
+        <!-- start: PAGE CONTENT -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-12">
+                <!-- start: DYNAMIC TABLE PANEL -->
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {% block fos_user_content %}
+                                {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+                            {% endblock fos_user_content %}
+                        {%else%}
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fa fa-exclamation-triangle"></i> {% trans %}You don't have enough privilege{% endtrans %}.
+
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% javascripts 
+   'bundles/user/js/jQuery/jquery-2.1.1.min.js'  
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+    <script>
+        $("#uploadBTN").bind("click", function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            $("#fos_user_registration_form_file").click();
+        });
+    </script>
+{% endblock %}

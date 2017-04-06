@@ -1,0 +1,370 @@
+{% extends "::base.html.twig" %}
+
+
+{%block mainContent%}
+
+    <div class="container">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-4 col-md-4">
+                <div class="panel panel-green panel-calendar">
+                    <div class="panel-heading border-light">
+                        <h4 class="panel-title">{% trans %}Today Appointments{% endtrans %}</h4>
+                        <div class="panel-tools">
+                            <div class="dropdown">
+                                <a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-white">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-light pull-right" role="menu">
+                                    <li>
+                                        <a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+                                    </li>
+                                    <li>
+                                        <a class="panel-refresh" href="#">
+                                            <i class="fa fa-refresh"></i> <span>Refresh</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="panel-expand" href="#">
+                                            <i class="fa fa-expand"></i> <span>Fullscreen</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-xs btn-link panel-close" href="#">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        {% if appointement=="true" %}
+                                            <div class="appointments border-bottom border-light space15">
+                                                <a class="btn btn-sm owl-prev text-light">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </a>
+                                                <div class="e-slider owl-carousel owl-theme" data-plugin-options='{"transitionStyle": "goDown", "pagination": false}'>
+                                                    {%for event in events%}
+
+                                                        {% if today|date("d-m-Y")==event.startDate|date("d-m-Y") %}
+                                                            <div class="item">
+
+                                                                <div class="inline-block padding-10">
+                                                                    <span class="bold-text text-small"><a style="color:white;" href="{{path('event', {'id': event.id}) }}">{{event.subject}}</a></span>
+                                                                    <span class="text-light text-small">{% trans %}with{% endtrans %} {{event.entity}}</span>
+                                                                </div>
+                                                                <div class="inline-block padding-10 border-left border-light">
+                                                                    <span class="bold-text text-small"><i class="fa fa-clock-o"></i> {{event.startDate|date("H:i")}}</span>
+
+                                                                </div>
+                                                            </div>
+
+                                                        {% endif %}
+
+                                                    {% endfor %}
+
+                                                </div>
+                                                <a class="btn btn-sm owl-next text-light"><i class="fa fa-chevron-right"></i> </a>
+                                            </div>
+                                        {%else%}
+                                            <hr>
+                                            <span class="bold-text text-small" style="padding:5px"><i class="fa fa-fw fa-exclamation"></i> {% trans %}No appointement for today{% endtrans %}</span>
+                                            <hr>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="pull-right">
+                                        <a href="{{path('event/new')}}" class="btn btn-sm btn-transparent-white new-event"><i class="fa fa-plus"></i> {% trans %}New Event{% endtrans %} </a>
+                                        <a href="{{path('calendar', { 'id': app.user.Id })}}" class="btn btn-sm btn-transparent-white show-calendar"><i class="fa fa-calendar-o"></i> {% trans %}Calendar{% endtrans %} </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-lg-4 col-md-4">
+                <div class="panel panel-white" style="padding: 1%;">
+                    <div class="panel-heading border-light">
+
+                      
+                        <h4 class="panel-title">{% trans %}Today Cart{% endtrans %}</h4>
+                        <div class="panel-tools">
+                            <div class="dropdown">
+                                <a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-white">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-light pull-right" role="menu">
+                                    <li>
+                                        <a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+                                    </li>                                   
+
+                                    <li>
+                                        <a class="panel-expand" href="#">
+                                            <i class="fa fa-expand"></i> <span>Fullscreen</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a class="btn btn-xs btn-link panel-close" href="#">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                   
+                    </div>
+                    <div class="panel-body panel-scroll height-300">
+                        <div id="divMap"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-red">
+                            
+                            <div class="panel-body padding-20 text-center">
+                                <div class="space10">
+                                    <i class="fa fa-exclamation-triangle fa-3x"></i>
+                                </div>
+
+                                <span class="text-light">Alert 1</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-body padding-20 text-center">
+                                <div class="space10">
+                                    <i class="fa fa-exclamation-triangle fa-3x"></i>
+                                </div>
+
+                                <span class="text-light">Alert 1</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-body padding-20 text-center">
+                                <div class="space10">
+                                    <i class="fa fa-exclamation-triangle fa-3x"></i>
+                                </div>
+
+                                <span class="text-light">Alert 1</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-body padding-20 text-center">
+                                <div class="space10">
+                                    <i class="fa fa-exclamation-triangle fa-3x"></i>
+                                </div>
+
+                                <span class="text-light">Alert 1</span>
+                            </div>
+                        </div>
+                    </div>
+                   
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% if is_granted('ROLE_ADMIN') %}
+
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="panel panel-white">
+                        <div class="panel-heading border-light">
+                            <h4 class="panel-title">{% trans %}History{% endtrans %}</h4>
+                            <div class="panel-tools">
+                                <div class="dropdown">
+                                    <a data-toggle="dropdown" class="btn btn-xs dropdown-toggle btn-transparent-grey">
+                                        <i class="fa fa-cog"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-light pull-right" role="menu">
+                                        <li>
+                                            <a class="panel-all" href="{{path('histories')}}">
+                                                <i class="fa fa-list"></i> <span>{% trans %}Show All{% endtrans %}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="panel-collapse collapses" href="#"><i class="fa fa-angle-up"></i> <span>Collapse</span> </a>
+                                        </li>
+                                        <li>
+                                            <a class="panel-refresh" href="#">
+                                                <i class="fa fa-refresh"></i> <span>Refresh</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="panel-expand" href="#">
+                                                <i class="fa fa-expand"></i> <span>Fullscreen</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a class="btn btn-xs btn-link panel-close" href="#">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body no-padding">
+
+                            <div class="tabbable no-margin no-padding partition-dark">
+
+                                <div class="tab-content partition-white">
+                                    <div id="users_tab_example1" class="tab-pane padding-bottom-5 active">
+                                        <div class="panel-scroll height-317 ps-container" style="height: 317px;">
+                                            <table class="table table-striped table-hover">
+                                                <tbody>
+                                                    {% for history in histories %}
+                                                        <tr>
+                                                            <td class="center" style="color: #ADADAD;">
+                                                                {%if history.featureType=="entity"%}
+                                                                    <i class="fa fa-user"></i>
+                                                                {%elseif history.featureType=="event"%}
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                {%else%}
+                                                                    <i class="fa fa-tasks"></i>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <span class="bold-text text-small">{{history.user}} 
+                                                                    {%if history.action=="updated"%}
+                                                                        {% trans %}updated{% endtrans %} 
+                                                                    {%elseif history.action=="deleted"%}
+                                                                        {% trans %}deleted{% endtrans %}
+                                                                    {%else%}
+                                                                        {% trans %}created{% endtrans %}
+                                                                    {% endif %}
+
+
+                                                                    {%if history.featureId%}<a href="{{ path(history.featureType, {'id': history.featureId}) }}">{{history.featureName}}</a>{%else%} {{history.featureName}} {%endif%} </span>
+                                                            </td>
+                                                            <td class="center" style="color: #ADADAD;">{{history.date|date('d-m-Y H:i')}}</td>
+
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                            <div class="center">
+                                                <hr>
+                                                <a href="{{path('histories')}}">{% trans %}Show All history{% endtrans %}</a>
+                                            </div>
+                                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 320px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 230px; display: inherit;"><div class="ps-scrollbar-y" style="top: 0px; height: 152px;"></div></div></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}  
+        </div>
+
+
+
+
+    </div>
+    {% javascripts 
+  'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+
+    {% endjavascripts %}
+    <script>
+        $('.panel-refresh').click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{path('history/reload')}}',
+                type: "POST",
+                cache: "false",
+                dataType: "html",
+                success: function (data) {
+                    $("tbody").html(data);
+                }
+            });
+        });
+
+
+
+
+        window.onload = GetMap;
+        var map = null;
+
+        // load Map Content with a handler on click to insert a pushpin
+        function GetMap() {
+
+            Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                    {
+                        callback: function () {
+                            map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                    {
+                                        credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                        mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                        enableClickableLogo: false,
+                                        enableSearchLogo: false,
+                                        center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                        zoom: 5,
+                                        showBreadcrumb: false,
+                                        showDashboard: false,
+                                        theme: new Microsoft.Maps.Themes.BingTheme()
+                                    });
+
+                            LoadTodayEvents();
+
+                        }
+                    });
+        }
+
+        function LoadTodayEvents() {
+            var boundsMap = new Array();
+        {% for event in events %}
+            {% if today|date("d-m-Y")==event.startDate|date("d-m-Y") %}
+                    var l = new Array();
+                    var s = "{{event.position}}";
+                    l = s.split(",");
+                    var longitude = parseFloat(l[0]);
+                    var lattitude = parseFloat(l[1]);
+
+                    var pushpinOptions = {icon: "{{ asset('bundles/pages/images/ppin/'~ event.status ~'.png') }}", draggable: false};
+
+
+                    var pushpin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(longitude, lattitude), pushpinOptions);
+                    map.entities.push(pushpin);
+                    map.entities.push(new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(longitude, lattitude), {title: '<font color="#FF9900"> {{event.subject}}</font>', description: '{{event.startDate|date('d-m-Y H:i')}} - {{event.endDate|date('d-m-Y H:i')}}', pushpin: pushpin}));
+
+                    boundsMap.push(new Microsoft.Maps.Location(longitude, lattitude));
+            {% endif %}
+        {% endfor %}
+
+                if (boundsMap.length > 0) {
+                    map.setView({bounds: Microsoft.Maps.LocationRect.fromLocations(boundsMap), padding: 100});
+                }
+
+
+            }
+
+
+
+
+    </script>
+{%endblock%}

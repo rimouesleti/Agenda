@@ -1,0 +1,495 @@
+{% extends "::base.html.twig" %}
+{%block breadcrumb%}
+    <li>
+        <a href="{{ path('events') }}">
+            {% trans %}Events list{% endtrans %}
+        </a>
+    </li>
+    <li class="active">   {% trans %}New event{% endtrans %}
+    </li>
+{%endblock%}
+{% block mainContent %}
+    {% stylesheets  filter='cssrewrite'   
+ 'bundles/pages/js/select2-3.5.1/select2.css'
+'bundles/pages/js/bootstrap-select/dist/css/bootstrap-select.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <div class="container" style="margin-top: 20px;" >
+        <div class="panel panel-white">
+            <div class="panel-body" >
+                <div class="noteWrap col-md-8 col-md-offset-2">
+
+                    <div class="col-md-12">
+                        <div class="errorHandler alert alert-danger no-display">
+                            <i class="fa fa-times-sign"></i>  {{ form_errors(form) }}
+                        </div>
+                    </div>
+                    <form action="{{ path('event/new') }}" method="post" {{ form_enctype(form) }} >
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">                               
+                                    {{ form_widget(form.subject, { 'attr': {'placeholder': 'Event title'|trans} })}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="type" style="font-weight: bold;">Type<span class="symbol required"></span></label>
+                                        {{ form_widget(form.type, { 'attr': {'class': 'selectpicker  form-control '} })}}
+                                </div>
+                            </div>
+
+                            <div class="no-all-day-range">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="startDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}Start Date{% endtrans %}</label><span class="symbol required"></span>
+                                            {{ form_widget(form.startDate) }}
+
+
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="no-all-day-range">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="endDate" style="font-weight: bold;"><i class="fa fa-fw fa-clock-o"></i> {% trans %}End Date{% endtrans %}</label><span class="symbol required"></span>
+                                            {{ form_widget(form.endDate) }}
+
+                                        </div>       
+                                    </div>
+                                </div>
+                            </div>  
+
+
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="status" style="font-weight: bold;">{% trans %}Status{% endtrans %}<span class="symbol required"></span></label>
+                                        {{ form_widget(form.status, { 'attr': {'class': 'selectpicker  form-control event-categories '} })}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">    
+                                    <label for="qualification" style="font-weight: bold;">Qualification</label>
+                                    {{ form_widget(form.qualification)}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <label for="callback" style="font-weight: bold;">{% trans %}Callback{% endtrans %}</label>
+                                    {{ form_widget(form.callback) }}
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="entity" style="font-weight: bold;">{% trans %}Contact Name{% endtrans %}<span class="symbol required"></span></label>
+                                        {{ form_widget(form.entity, { 'attr': {'style': 'width:100% '} }) }}
+                                </div> 
+                                <a href="{{path('entities/new', {'event': "true"})}}" type="button" class="btn btn-default btn-xs pull-right">
+                                    <i class="fa fa-plus"></i> {% trans %}New Contact{% endtrans %}
+                                </a>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="user" style="font-weight: bold;">{% trans %}Assigned To{% endtrans %}</label>
+                                    {{ form_widget(form.user, { 'attr': {'style': 'width:100% '} }) }}
+                                </div> 
+
+                            </div>
+
+
+
+                            <div class="col-md-12" id="locationBTN">
+                                <label  style="font-weight: bold;">{% trans %}Appointment Location{% endtrans %}</label>
+                                <hr>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="contactLocation" value="option1" checked> {% trans %}Use contact location{% endtrans %}
+                                </label>
+
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="existingLocation" value="option2"> {% trans %}Use another Location{% endtrans %}
+                                </label>
+
+                            </div>
+
+                            <div class="col-md-12" style="display: none;" id="locationForm">
+
+                                <div class="alert-success">
+                                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                                        <div class="flash notice">
+                                            {{ flashMessage }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+
+
+
+                                <div class="form-group"  >
+                                    <label for="location" style="font-weight: bold;">{% trans %}My locations{% endtrans %}</label>
+                                    {{ form_widget(form.location, { 'attr': {'style': 'width:100% '} }) }}
+
+                                </div> 
+
+                                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-plus"></i> {% trans %}New Location{% endtrans %}
+                                </button>
+                            </div>
+
+
+
+
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="form-group">
+                                    <label for="description" style="font-weight: bold;">{% trans %}Description{% endtrans %}</label>
+                                    {{ form_widget(form.description, { 'attr': {'class': 'summernote'} })}}
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_rest(form) }}
+
+
+                        <button class="btn btn-green col-md-4 col-xs-12" type="submit" style="margin-top: 5%;float: right;">
+                            <i class="fa fa-floppy-o"></i> {% trans %}Submit{% endtrans %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% javascripts 
+  'bundles/user/js/jQuery/jquery-2.1.1.min.js' 
+ 'bundles/pages/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+ 'bundles/pages/css/summernote/dist/summernote.min.js' 
+  'bundles/pages/js/bootstrap-select/js/bootstrap-select.js'
+'bundles/pages/js/select2-3.5.1/select2.min.js'
+ 'bundles/pages/js/newEvent.js' 
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+    {%if entity_id %}
+        <script>
+
+            $("#icgm2_pagesbundle_events_entity").select2("val", "{{entity_id}}");
+
+        </script>
+
+    {%endif%}
+    <script>
+        $('#locationBTN input[name=inlineRadioOptions]').click(function () {
+            if ($('#locationBTN input[name=inlineRadioOptions]:checked').val() === "option2") {
+                $("#locationForm").show();
+
+            } else {
+                $("#locationForm").hide();
+            }
+        });
+
+
+
+        $("#icgm2_pagesbundle_events_user").val("{{user_id}}");
+        $('#icgm2_pagesbundle_events_user').select2();
+        $("#icgm2_pagesbundle_events_status option").each(function (index, value) {
+            var option = $(this);
+            if (option.val() === "planned") {
+                option.attr('data-content', "<span class='label label-info'>{% trans %}Planned{% endtrans %}</span>");
+            }
+            else if (option.val() === "cancelled") {
+                option.attr('data-content', "<span class='label label-danger'>{% trans %}Cancelled{% endtrans %}</span>");
+            }
+            else if (option.val() === "done") {
+                option.attr('data-content', "<span class='label label-success'>{% trans %}Done{% endtrans %}</span>");
+            }
+            else if (option.val() === "held") {
+                option.attr('data-content', "<span class='label label-warning'>{% trans %}Held{% endtrans %}</span>");
+            }
+
+        });
+        $("#icgm2_pagesbundle_events_type option").each(function (index, value) {
+            var option = $(this);
+
+            if (option.val() === "appointment") {
+
+                option.text("{% trans %}Appointment{% endtrans %}");
+            }
+            else if (option.val() === "meeting") {
+                option.text("{% trans %}Meeting{% endtrans %}");
+            }
+            else if (option.val() === "workshop") {
+                option.text("{% trans %}Workshop{% endtrans %}");
+            }
+            else if (option.val() === "other") {
+                option.text("{% trans %}Other{% endtrans %}");
+            }
+
+        });
+
+
+    </script>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans %}New Location{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <form action="{{ path('location/new') }}" method="post" {{ form_enctype(form) }} >
+
+                        <div class="form-group col-md-12">
+                            <label for="name" style="font-weight: bold;">{% trans %}Name{% endtrans %}<span class="symbol required"></span></label>
+                                {{ form_widget(formLocation.name)}}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="country" style="font-weight: bold;">{% trans %}Country{% endtrans %}<span class="symbol required"></span></label>
+                                {{ form_widget(formLocation.country)}}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city" style="font-weight: bold;">{% trans %}City{% endtrans %}<span class="symbol required"></span></label>
+                                {{ form_widget(formLocation.city)}}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="address" style="font-weight: bold;">{% trans %}Address{% endtrans %}</label>
+                            {{ form_widget(formLocation.address)}}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="zipCode" style="font-weight: bold;">{% trans %}Zip Code{% endtrans %}</label>
+                            {{ form_widget(formLocation.zipCode)}}
+                        </div>
+                        {{ form_widget(formLocation.position, { 'attr': {'style': 'display:none'} }) }}
+
+
+                        <div class="col-md-12 height-300" style="margin-bottom: 3%">
+                            <div id="divMap"></div>
+                        </div>
+
+                        {{ form_rest(formLocation) }}
+
+
+
+                        <div class="clear"></div>
+
+                        <div class="row" style="padding: 2%">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                            <button type="submit" class="btn btn-green">{% trans %}Submit{% endtrans %}</button>
+                        </div>
+
+
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=fr-fr"></script>
+    <script>
+
+
+
+        window.onload = GetMap;
+        var map = null;
+        var pin;
+
+        // load Map Content with a handler on click to insert a pushpin
+        function GetMap() {
+
+            Microsoft.Maps.loadModule('Microsoft.Maps.Themes.BingTheme',
+                    {
+                        callback: function () {
+                            map = new Microsoft.Maps.Map(document.getElementById('divMap'),
+                                    {
+                                        credentials: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                                        mapTypeId: Microsoft.Maps.MapTypeId.road,
+                                        enableClickableLogo: false,
+                                        enableSearchLogo: false,
+                                        center: new Microsoft.Maps.GeoLocationProvider(map).getCurrentPosition({showAccuracyCircle: false}),
+                                        zoom: 5,
+                                        showBreadcrumb: false,
+                                        showDashboard: false
+                                    });
+
+                        }
+                    });
+        }
+
+        $("#icgm2_pagesbundle_location_city").change(function () {
+
+            if ($(this).val() !== "")
+            {
+                LoadSearchModule();
+            }
+
+        });
+
+        $("#icgm2_pagesbundle_location_address").change(function () {
+
+            if ($(this).val() !== "")
+            {
+                LoadSearchModule2();
+            }
+
+        });
+
+        function LoadSearchModule() {
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest})
+        }
+        function LoadSearchModule2() {
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', {callback: searchRequest2})
+        }
+
+        function createSearchManager() {
+            map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+            searchManager = map.getComponent('searchManager');
+        }
+        function createSearchManager2() {
+            map.addComponent('searchManager', new Microsoft.Maps.Search.SearchManager(map));
+            searchManager = map.getComponent('searchManager');
+        }
+
+        function searchRequest() {
+            createSearchManager();
+            var query = $('#icgm2_pagesbundle_location_country').val() + " " + $('#icgm2_pagesbundle_location_city').val() + " ";
+            if (query != "")
+            {
+                var request = {
+                    query: query,
+                    count: 20,
+                    startIndex: 0,
+                    bounds: map.getBounds(),
+                    callback: search_onSearchSuccess,
+                    errorCallback: search_onSearchFailure
+                };
+                searchManager.search(request);
+            }
+            else
+                alert('champ vide');
+        }
+        function searchRequest2() {
+            createSearchManager2();
+            var query = $('#icgm2_pagesbundle_location_country').val() + " " + $('#icgm2_pagesbundle_location_city').val() + " " + $('#icgm2_pagesbundle_location_address').val() + " " + $("#icgm2_pagesbundle_location_zipCode");
+            if (query != "")
+            {
+                var request = {
+                    query: query,
+                    count: 20,
+                    startIndex: 0,
+                    bounds: map.getBounds(),
+                    callback: search_onSearchSuccess2,
+                    errorCallback: search_onSearchFailure2
+                };
+                searchManager.search(request);
+            }
+            else
+                alert('champ vide');
+        }
+
+        function search_onSearchSuccess(result, userData) {
+
+            if (result.searchRegion.mapBounds !== null) {
+
+                search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+                map.setView({
+                    bounds: result.searchRegion.mapBounds.locationRect
+                });
+            }
+            else {
+                console.log('pas de resultat');
+            }
+        }
+
+        function search_onSearchSuccess2(result, userData) {
+
+            if (result.searchRegion.mapBounds !== null) {
+
+                search_createMapPin(result['searchRegion']['geocodeLocations']['0']['location']['latitude'], result['searchRegion']['geocodeLocations']['0']['location']['longitude']);
+                map.setView({
+                    bounds: result.searchRegion.mapBounds.locationRect
+                });
+            }
+            else {
+                console.log('pas de resultat');
+            }
+        }
+
+        function search_createMapPin(a, b) {
+            var pushpinOptions = {draggable: true};
+            pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(a, b), pushpinOptions);
+
+            Microsoft.Maps.Events.addHandler(pin, 'click', function () {
+
+            });
+            map.entities.clear();
+            map.entities.push(pin);
+            var pushpindragend = Microsoft.Maps.Events.addHandler(pin, 'dragend', endDragDetails);
+
+
+            $("#icgm2_pagesbundle_location_position").val(a + "," + b);
+
+
+        }
+
+        endDragDetails = function (e)
+        {    //console.log(e.entity.getLocation().latitude+","+e.entity.getLocation().longitude ); 
+            $.ajax({
+                url: "http://dev.virtualearth.net/REST/v1/Locations/" + e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude,
+                dataType: "jsonp",
+                data: {
+                    key: "AoqgNgDfcQ1C-pSBC6q8hJj9jxslNxwEzb8sySpQJtOZSCtg3GXWy11AFqx_5--Z",
+                    q: 'xml'
+                },
+                jsonp: "jsonp",
+                success: function (data) {
+
+                    $("#icgm2_pagesbundle_location_position").val(e.entity.getLocation().latitude + "," + e.entity.getLocation().longitude);
+
+                    var result = data.resourceSets[0];
+                    if (result) {
+                        if (result.estimatedTotal > 0) {
+
+                            var rslt = result.resources[0].address;
+                            $("#icgm2_pagesbundle_location_zipCode").val(rslt.postalCode);
+                            $("#icgm2_pagesbundle_location_address").val(rslt.formattedAddress)
+                            $("#icgm2_pagesbundle_location_country").val(rslt.countryRegion)
+                            $("#icgm2_pagesbundle_location_city").val(rslt.locality)
+                        }
+                    }
+
+                }
+            });
+
+        }
+
+        function search_onSearchFailure(result, userData) {
+            alert('Pas de Resultat');
+        }
+        function search_onSearchFailure2(result, userData) {
+            alert('Pas de Resultat');
+        }
+    </script>
+{% endblock %}
